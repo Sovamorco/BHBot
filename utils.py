@@ -9,6 +9,7 @@ from math import floor, ceil
 from pathlib import Path
 
 import PySimpleGUI as Sg
+import requests
 from pyupdater.client import Client
 
 from client_config import ClientConfig
@@ -88,8 +89,8 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.2.17-beta'
-        self.APP_CHANGELOG = f'Updated to {self.APP_VERSION} \\o/\n\nChanged how mode name\nlocalization works.'
+        self.APP_VERSION = '3.2.18-beta'
+        self.APP_CHANGELOG = f'Updated to {self.APP_VERSION} \\o/\n\nAdded support for\nlocked/unlocked characters.'
 
         self.compiled = getattr(sys, 'frozen', False)
 
@@ -294,3 +295,12 @@ def format_time(seconds):
     m, s = divmod(seconds, 60)
     h, m = divmod(m, 60)
     return f'{h:d}:{m:02d}:{s:02d}'
+
+
+def get_rotation():
+    try:
+        res = requests.get('https://sovamor.co/bhbot/rotation').json()
+        return [character.lower() for character in res.get('rotation')]
+    except Exception as e:
+        logger.debug(f'Error getting rotation: {e}')
+        return []

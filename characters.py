@@ -1,16 +1,20 @@
 from levels import *
 
-character_matrix = [
-    ['bödvar', 'cassidy', 'orion', 'lord vraxx', 'gnash', 'queen nai', 'hattori', 'sir roland', 'scarlet', 'thatch', 'ada', 'sentinel', 'lucien', 'teros'],
-    ['brynn', 'asuri', 'barraza', 'ember', 'azoth', 'koji', 'ulgrim', 'diana', 'jhala', 'kor', 'wu shang', 'val', 'ragnir', 'cross'],
-    ['mirage', 'nix', 'mordex', 'yumiko', 'artemis', 'caspian', 'sidra', 'xull', 'kaya', 'isaiah', 'jiro', 'lin fei', 'zariel', 'rayman'],
-    ['dusk', 'fait', 'thor', 'petra', 'vector', 'volkov', 'onyx', 'jaeyun', 'mako', 'magyar', 'reno', 'random']
-]
+characters = ['bödvar', 'cassidy', 'orion', 'lord vraxx', 'gnash', 'queen nai', 'hattori', 'sir roland', 'scarlet', 'thatch', 'ada', 'sentinel', 'lucien', 'teros', 'brynn', 'asuri', 'barraza',
+              'ember', 'azoth', 'koji', 'ulgrim', 'diana', 'jhala', 'kor', 'wu shang', 'val', 'ragnir', 'cross', 'mirage', 'nix', 'mordex', 'yumiko', 'artemis', 'caspian', 'sidra', 'xull', 'kaya',
+              'isaiah', 'jiro', 'lin fei', 'zariel', 'rayman', 'dusk', 'fait', 'thor', 'petra', 'vector', 'volkov', 'onyx', 'jaeyun', 'mako', 'magyar', 'reno']
 
-flat_characters = sum(character_matrix, [])
+level_character_matrix = list([characters[i:i + 14] for i in range(0, len(characters), 14)])
 
-no_random = flat_characters[:-1]
-level_character_matrix = list([no_random[i:i+14] for i in range(0, len(no_random), 14)])
+character_matrix = []
+
+
+def build_character_matrix(_characters):
+    global character_matrix
+    character_matrix = list([_characters[i:i + 14] for i in range(0, len(_characters), 14)])
+
+
+build_character_matrix(characters + ['random'])
 
 
 def find_char(name):
@@ -36,10 +40,11 @@ def parse_pos(inp):
 
 
 class Character:
-    def __init__(self, name, level=0, xp=0):
+    def __init__(self, name, level=0, xp=0, unlocked=True):
         self.name = name
         self.level = level
         self.xp = xp
+        self.unlocked = unlocked
 
     def add_xp(self, xp):
         gold = 0
@@ -94,7 +99,7 @@ class Character:
         return self.get_duration_for_xp(self.xp_to_next_gold)
 
     def __str__(self):
-        return f'<{self.name.capitalize()} (lvl: {self.level}, xp: {self.xp})>'
+        return f'<{self.name.capitalize()} (lvl: {self.level}, xp: {self.xp}, unlocked: {self.unlocked})>'
 
     def __repr__(self):
         return str(self)

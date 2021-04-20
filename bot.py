@@ -20,6 +20,7 @@ class BrawlhallaBot:
         self.mode = self.config.mode(bot=self)
 
         self.characters = []
+        self.unlocked_characters = []
         self.character = None
         self.duration = None
 
@@ -76,10 +77,12 @@ class BrawlhallaBot:
         if not self.characters:
             if self.mode.parse_character_levels:
                 self.characters = self.get_characters()
+                self.unlocked_characters = [character for character in self.characters if character.unlocked]
             else:
-                self.characters = [Character(name) for name in flat_characters]
+                self.characters = [Character(name) for name in characters]
+                self.unlocked_characters = self.characters
 
-        self.character = self.characters[0]
+        self.character = self.unlocked_characters[0]
         logger.debug('initialized')
 
     def on_exit(self):
@@ -257,20 +260,26 @@ class BrawlhallaBot:
             sleep(.5)
 
     def get_characters(self):
-        characters = []
+        _characters = []
+        rotation = get_rotation()
         self.execute_steps(self.go_to_menu, self.select_mtl, self.virtual_input.quick, .5, self.sort_by_date)
         logger.info('collecting_character_data')
         for line in level_character_matrix:
             for character in line:
                 level = self.level_definer.get_level()
                 xp = self.level_definer.get_xp(level)
-                characters.append(Character(character, level, xp))
-                logger.debug(characters[-1])
+                unlocked = character in rotation or self.level_definer.get_unlocked()
+                _characters.append(Character(character, level, xp, unlocked))
+                logger.debug(_characters[-1])
                 self.virtual_input.right()
                 sleep(.15)
             self.virtual_input.down()
             sleep(.15)
-        return characters
+        unlocked_characters = [character.name for character in _characters if character.unlocked]
+        locked_characters = [character.name for character in _characters if not character.unlocked]
+        fixed_characters = unlocked_characters + ['random'] + locked_characters
+        build_character_matrix(fixed_characters)
+        return _characters
 
     def go_to_lobby(self):
         iters = 0
@@ -347,6 +356,7 @@ class BrawlhallaBot:
         self.last_pause = time()
         if self.queued_recalculation:
             self.characters = []
+            self.unlocked_characters = []
             self.queued_recalculation = False
             raise QueuedRecalculation
 
@@ -362,7 +372,7 @@ class BrawlhallaBot:
         self.execute_steps(*steps)
 
     def initial_setup(self):
-        self.execute_steps('creating_lobby', self.go_to_menu, 1, 1, self.select_cgr, self.go_to_lobby, 'setting_lobby', self.setup_lobby, .5, self.add_bots)
+        self.execute_steps('creating_lobby', self.go_to_menu, 1, 1, self.select_cgr, self.go_to_lobby, 'setting_lobby', self.setup_lobby, 4, self.add_bots)
 
     def before_fight(self):
         self.execute_steps(2, self.pick_character, 1, self.set_duration, 1)

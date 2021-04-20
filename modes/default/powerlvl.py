@@ -7,7 +7,6 @@ class PowerLvl(Mode):
         'Русский': 'Повышение персонажа',
         'English': 'Leveling up one character',
     }
-    parse_character_levels = False
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

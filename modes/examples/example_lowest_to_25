@@ -19,7 +19,7 @@ class LowestTo25(Mode):
 
     @property
     def next_character(self):
-        sorted_by_xp = sorted(self.bot.characters, key=lambda char: char.total_xp)
+        sorted_by_xp = sorted(self.bot.unlocked_characters, key=lambda char: char.total_xp)
         try:
             return next(filter(lambda x: x.level < 25, sorted_by_xp))
         except StopIteration:

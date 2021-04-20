@@ -19,4 +19,4 @@ class FastLvl(Mode):
 
     @property
     def next_character(self):
-        return sorted(self.bot.characters, key=lambda char: char.xp_to_next_level)[0]
+        return sorted(self.bot.unlocked_characters, key=lambda char: char.xp_to_next_level)[0]

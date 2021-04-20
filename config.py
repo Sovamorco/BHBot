@@ -87,7 +87,7 @@ class GUIConfig:
 
     @property
     def characters(self):
-        res = [character.capitalize() for character in sorted(flat_characters[:-1])]
+        res = [character.capitalize() for character in sorted(characters[:-1])]
         if hasattr(self, 'window') and not self.get_mode().parse_character_levels:
             res.insert(0, 'Random')
         return res

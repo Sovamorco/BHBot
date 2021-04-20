@@ -11,6 +11,9 @@ bar_colors = ((162, 162, 180), (130, 139, 160), (62, 90, 118))
 rewards_bar_bbox = 786, 331, 1365, 332
 rewards_bar_colors = ((35, 120), (190, 255), (40, 165))
 
+locked_pixel = 1140, 729
+locked_color = (220, 220, 222)
+
 first_digit_dict = {
     '1': ((10, 17), (15, 45), (17, 4), (20, 15), (27, 45), (29, 4), (19, 32)),
     '2': ((5, 11), (6, 5), (9, 3), (30, 4), (34, 45), (36, 12)),
@@ -88,6 +91,10 @@ class LevelDefiner:
     
     def get_xp(self, level, reward=False):
         return int((self.get_reward_percentage() if reward else self.get_percentage()) * levels_xp[level])
+
+    def get_unlocked(self):
+        screenshot = self.brawlhalla.make_screenshot()
+        return screenshot.getpixel(locked_pixel) != locked_color
 
     @staticmethod
     def get_first_digit(image):

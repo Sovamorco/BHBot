@@ -37,6 +37,7 @@ class Example(Mode):
 # Main useful properties of BrawlhallaBot class:
 # config - contains used instance of Config class;
 # characters - list of Character class instances;
+# unlocked_characters - list of unlocked Character class instances;
 # character - current selected character, Bödvar by default;
 # duration - current selected duration, 15 by default.
 
@@ -49,12 +50,13 @@ class Example(Mode):
 # name - lowercase name of the character as present in the game;
 # level - int, level of character (0 if parse_character_levels is False);
 # xp - int, xp of character on current level (initially 0 if parse_character_levels is False);
+# unlocked - bool, if the character is unlocked;
 # total_xp - int, total xp of character (equals to xp if parse_character_levels is False);
 # xp_to_next_level - int, xp required to get to the next level;
 # xp_to_next_gold - int, xp required to get to the next gold reward;
 # duration_to_next_level - duration required to get to next level (max 15);
 # duration_to_next_gold - duration required to get to next gold reward (max 15);
-# next gold level - next level on which character will get a gold reward (max 100);
+# next_gold_level - next level on which character will get a gold reward (max 100);
 # get_xp_to_level(level) - xp required to get to <level> level (min 1);
 # get_duration_for_xp(xp, maximum=15) - duration required to earn <xp> xp (max <maximum>).
 
