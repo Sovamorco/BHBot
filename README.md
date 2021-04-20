@@ -26,6 +26,8 @@ Developer is not responsible for any harm the program may case. Use at your own 
 # Installation
 Latest release can always be downloaded [here](https://sovamor.co/bhbot)
 
+I will also try to release all stable versions to github releases
+
 Bot will auto-update as soon as any updates are released according to selected branch in settings
 
 # Usage
