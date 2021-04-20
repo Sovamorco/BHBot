@@ -30,13 +30,17 @@ Developer is not responsible for any harm the program may case. Use at your own 
 # Installation
 Latest release can always be downloaded [here](https://sovamor.co/bhbot)
 
+I will also try to release all stable versions to github releases
+
 Bot will auto-update as soon as any updates are released according to selected branch in settings
 
 # Usage
 Should be pretty straightforward. Just select needed settings and click "Start" :)
 
 # Limitations
-As of now, bot works ONLY on 1920x1080 screens. If you want to request support for any other resolution, please [open an issue](https://github.com/sovamorco/bhbot/issues)
+- As of now, bot works ONLY on 1920x1080 screens. If you want to request support for any other resolution, please [open an issue](https://github.com/sovamorco/bhbot/issues)
+- All modes work only with all characters unlocked. If you have any characters locked, please create your own mode or [open an issue](https://github.com/sovamorco/bhbot/issues)
+- Bot requires "Collapse crossovers" to be set to Yes. If you think it should automatically set it to be so, please [open an issue](https://github.com/sovamorco/bhbot/issues)
 
 # Internal stuff
 You can always check the code, but basically bot uses windows SendMessage API to send inputs directly to Brawlhalla window and pixel detection to detect states and
