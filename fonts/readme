@@ -1,0 +1,8 @@
+You can just put fonts into fonts folder directly
+Only .ttf fonts work for now
+Names are automatically parsed from fonts so filenames are not important
+
+
+В эту папку можно напрямую класть шрифты
+На данный момент из форматов работает только .ttf
+Имена файлов не важны, так как имена шрифтов парсятся из самих шрифтов

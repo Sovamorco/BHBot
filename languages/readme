@@ -1,0 +1,8 @@
+Language has to be singular .py file in languages directory (subdirectories are not parsed)
+It is just a mapping of outputs and layout names
+Check present languages for references
+
+
+Язык должен быть единичным .py файлом в папке languages (под-директории не парсятся)
+Этот файл должен быть просто переводчиком сообщений и текстовых элементов интерфейса
+Для справки см. уже существующие языки

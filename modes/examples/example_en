@@ -1,0 +1,62 @@
+# You have to import abstract class Mode from abstract_mode to subclass it
+# You can also import logger from abstract_mode for logger instance used by bot
+# You can also import global_settings from abstract_mode for program settings instance
+from abstract_mode import Mode
+
+
+# Any amount of subclasses of Mode per file can be defined. Only subclasses of Mode will be shown in settings.
+# All .py files under any directories in modes folder will be imported so be careful with executing code outside of classes/functions/if __name__ == '__main__'.
+class Example(Mode):
+    name = {
+        'default': 'Whatever name will be shown in config',    # Default name for any undefined language
+        'Русский': '...',                                      # Names specific to languages
+        'English': '...',                                      # Names specific to languages
+    } # Can be None or not defined as well. Then class name will be used as a substitute.
+    character_selection_enabled = True # If character selection should be enabled in config gui. True by default.
+    duration_selection_enabled = True # If duration selection should be enabled in config gui. True by default.
+    parse_character_levels = True # If True, bot will parse character levels and xp and bot.characters will reflect that. True by default.
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs) # Only kwarg passed to the program by default is bot=<Whatever bot instance is running>.
+                                          # You can call super().__init__() like in example here or assign self.bot (or whatever name you wish to use) yourself.
+                                          # WARNING: __init__ is called before the bot instance has characters, character, duration and whatever other properties set.
+
+    # One of two abstract properties that have to be redefined in Mode subclasses.
+    # next_duration has to return integer in range [1, 15] which will be used for next game.
+    @property
+    def next_duration(self):
+        return self.bot.config.duration
+
+    # Another abstract property that has to be redefined in Mode subclasses.
+    # next_character has to return one of the characters from bot.characters list.
+    @property
+    def next_character(self):
+        return next(filter(lambda x: x.name == self.config.character.lower(), self.characters))
+
+
+# Main useful properties of BrawlhallaBot class:
+# config - contains used instance of Config class;
+# characters - list of Character class instances;
+# character - current selected character, Bödvar by default;
+# duration - current selected duration, 15 by default.
+
+# Main useful properties of Config class:
+# character - character as initially set in config gui;
+# duration - duration as initially set in config gui;
+# version - current program version.
+
+# Main useful properties/methods of Character class:
+# name - lowercase name of the character as present in the game;
+# level - int, level of character (0 if parse_character_levels is False);
+# xp - int, xp of character on current level (initially 0 if parse_character_levels is False);
+# total_xp - int, total xp of character (equals to xp if parse_character_levels is False);
+# xp_to_next_level - int, xp required to get to the next level;
+# xp_to_next_gold - int, xp required to get to the next gold reward;
+# duration_to_next_level - duration required to get to next level (max 15);
+# duration_to_next_gold - duration required to get to next gold reward (max 15);
+# next gold level - next level on which character will get a gold reward (max 100);
+# get_xp_to_level(level) - xp required to get to <level> level (min 1);
+# get_duration_for_xp(xp, maximum=15) - duration required to earn <xp> xp (max <maximum>).
+
+
+# FMI refer to default modes in modes/default folder.
