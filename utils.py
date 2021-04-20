@@ -89,7 +89,7 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.2.18-beta'
+        self.APP_VERSION = '3.2.18'
         self.APP_CHANGELOG = f'Updated to {self.APP_VERSION} \\o/\n\nAdded support for\nlocked/unlocked characters.'
 
         self.compiled = getattr(sys, 'frozen', False)
