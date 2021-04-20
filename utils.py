@@ -88,7 +88,7 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.2.17'
+        self.APP_VERSION = '3.2.17-beta'
         self.APP_CHANGELOG = f'Updated to {self.APP_VERSION} \\o/\n\nChanged how mode name\nlocalization works.'
 
         self.compiled = getattr(sys, 'frozen', False)
