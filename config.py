@@ -8,7 +8,7 @@ from utils import *
 
 def display_changelog():
     changelog_path = Path(os.getenv('LOCALAPPDATA')) / 'BHBot' / 'changelog'
-    if not global_settings.compiled and (not changelog_path.exists() or changelog_path.read_text('utf-8') != global_settings.APP_VERSION):
+    if global_settings.compiled and (not changelog_path.exists() or changelog_path.read_text('utf-8') != global_settings.APP_VERSION):
         Sg.popup(global_settings.APP_CHANGELOG, font=(global_settings.font, 13), title=global_settings.language.LAYOUT_MAPPING.get('changelog_popup_title', 'Changelog'), icon=global_settings.icon)
         changelog_path.parent.mkdir(parents=True, exist_ok=True)
         changelog_path.write_text(global_settings.APP_VERSION, 'utf-8')

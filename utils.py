@@ -89,7 +89,7 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.2.19'
+        self.APP_VERSION = '3.2.20'
         self.APP_CHANGELOGS = {
             'English': f'Updated to {self.APP_VERSION} \\o/\n\nAdded tooltips for settings.\n\nAlso, localized changelogs',
             'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nДобавил подсказки к настройкам.\n\nТак же локализовал чейнджлоги\n(как вы могли заметить)',
