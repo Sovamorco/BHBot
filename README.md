@@ -1,4 +1,7 @@
 # BHBot
+
+[Этот файл доступен на Русском языке](README_RU.md)
+
 Gold/XP farming bot for Brawlhalla
 
 Heavily inspired by [BrawlhallaEZ](https://github.com/jamunano/BrawlhallaEZ)
@@ -8,7 +11,7 @@ Heavily inspired by [BrawlhallaEZ](https://github.com/jamunano/BrawlhallaEZ)
 It should not, but still can cause some unexpected consequences, including making purchases from mallhalla (with in-game currencies).
 Developer is not responsible for any harm the program may case. Use at your own risk
 
-(it should work fine tho, I tested it for >500 hours at this point)
+(it should work fine tho, I tested it for >600 hours at this point)
 
 # Features
 
@@ -26,7 +29,7 @@ Developer is not responsible for any harm the program may case. Use at your own 
 # Installation
 Latest release can always be downloaded [here](https://sovamor.co/bhbot)
 
-I will also try to release all stable versions to github releases
+I will also try to release all stable versions to GitHub releases
 
 Bot will auto-update as soon as any updates are released according to selected branch in settings
 
