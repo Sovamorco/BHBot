@@ -90,13 +90,19 @@ class Character:
     def get_duration_for_xp(xp, maximum=15):
         return min(ceil((xp + 1) / 41), maximum)
 
+    def get_duration_to_next_level(self, maximum=15):
+        return self.get_duration_for_xp(self.xp_to_next_level, maximum)
+
     @property
     def duration_to_next_level(self):
-        return self.get_duration_for_xp(self.xp_to_next_level)
+        return self.get_duration_to_next_level()
+
+    def get_duration_to_next_gold(self, maximum=15):
+        return self.get_duration_for_xp(self.xp_to_next_gold, maximum)
 
     @property
     def duration_to_next_gold(self):
-        return self.get_duration_for_xp(self.xp_to_next_gold)
+        return self.get_duration_to_next_gold()
 
     def __str__(self):
         return f'<{self.name.capitalize()} (lvl: {self.level}, xp: {self.xp}, unlocked: {self.unlocked})>'

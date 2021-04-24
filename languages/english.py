@@ -16,6 +16,7 @@ LAYOUT_MAPPING = {
     # Settings window
     'settings_window_title': 'Settings',
     'settings_title': 'Settings',
+    'settings_help': 'For extra information hover above settings',
     'language_name_text': 'Language: ',
     'font_text': 'Font: ',
     'autostart_text': 'Automatically start the bot: ',
@@ -49,6 +50,35 @@ LAYOUT_MAPPING = {
     'changelog_popup_title': 'Changelog',
 }
 
+TOOLTIPS = {
+    # Settings window
+    'settings_help': '\n     :)     \n',
+    'language_name_column': 'Choose a language (automatically updates)',
+    'font_column': 'Choose a font (automatically updates)',
+    'autostart_column': 'Automatically start the bot if the program is running and you are not playing Brawlhalla\n'
+                        'Checks every 5 minutes',
+    'branch_column': 'Beta may have experimental and unstable updates',
+    'debug_column': 'Will print A LOT of useless debug info into the output',
+    'mode_name_column': 'Choose a mode bot will follow while choosing characters/duration',
+    'character_column': 'Choose a character (disabled for some modes)',
+    'duration_column': 'Choose a duration\n'
+                       'For some modes this is max duration that the bot will use',
+    'auto_stop_column': 'Brawlhalla imposes xp/gold limit which is triggered if you play too much\n'
+                        'This option enables automatically stopping the bot to reset said limit\n'
+                        'Otherwise, bot will continue to work but will get close to no xp/gold',
+    'auto_detect_auto_stop_column': 'Enables automatic detection of xp limit from xp earnings after the game\n'
+                                    'Disables following 2 options',
+    'auto_stop_frequency_column': 'How often will bot stop to reset xp/gold limit\n'
+                                  'From experience, 4.5-5 hours is average time needed to get to the limit',
+    'auto_stop_duration_column': 'How much time bot will wait to reset xp/gold limit\n'
+                                 'From experience, 30 minutes is enough (25 is not afaik)',
+    'bots_column': 'How many bots (not including player) will there be in a game\n'
+                   'Hits and goals do not actually affect xp/gold gain, so 2 is optimal value\n'
+                   'Brawlhalla is known to work extremely unstable with >4 players and long games',
+    'stealth_column': 'Will hide the game window after Brawlhalla startsn\n'
+                      'Also automatically sets following option to True',
+    'mute_column': 'If bot should disable sounds/music ingame after getting into menu',
+}
 
 MESSAGES = {
     'waiting_for_bh_window': 'Waiting for brawlhalla window',
@@ -101,4 +131,7 @@ MESSAGES = {
     'update_total_stats': 'Updating all-time stats',
     'total_stats': '\nAll-Time Stats:\n\nGames completed: %s\nXP earned: %s\nGold earned: %s\nTime running: %s\n',
     'autostart_check': 'Checking autostart conditions',
+    'rotation_error': 'Error getting character rotation:\n%s',
+    'muting': 'Muting sounds',
+    'reconnected': 'Reconnected',
 }

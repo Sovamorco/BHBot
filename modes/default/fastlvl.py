@@ -8,14 +8,13 @@ class FastLvl(Mode):
         'English': 'Leveling up characters closest to next level',
     }
     character_selection_enabled = False
-    duration_selection_enabled = False
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     @property
     def next_duration(self):
-        return self.next_character.duration_to_next_level
+        return self.next_character.get_duration_to_next_level(self.bot.config.duration)
 
     @property
     def next_character(self):

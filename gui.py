@@ -36,6 +36,8 @@ class GUI:
         global_settings.set_debug_state()
         logger.addHandler(handler)
 
+        Config.load()  # Display old config warning on bot launch and not on settings opened
+
     @staticmethod
     def create_window():
         Sg.theme('DarkGrey10')

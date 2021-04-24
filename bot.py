@@ -224,6 +224,7 @@ class BrawlhallaBot:
                 logger.info('offline')
                 self.select_cgr()
                 self.go_to_lobby()
+                logger.info('reconnected')
                 self.go_to_menu()
             if iters > 100:
                 raise NotRespondingError
@@ -248,6 +249,7 @@ class BrawlhallaBot:
         self.select_menu_item('system_settings', self.virtual_input.down)
 
     def mute(self):
+        logger.info('muting')
         self.go_to_menu()
         self.select_settings()
         self.select_system_settings()

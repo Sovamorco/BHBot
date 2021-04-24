@@ -8,10 +8,10 @@ from utils import *
 
 def display_changelog():
     changelog_path = Path(os.getenv('LOCALAPPDATA')) / 'BHBot' / 'changelog'
-    if global_settings.compiled and (not changelog_path.exists() or changelog_path.read_text('utf-8') != global_settings.APP_CHANGELOG):
+    if not global_settings.compiled and (not changelog_path.exists() or changelog_path.read_text('utf-8') != global_settings.APP_VERSION):
         Sg.popup(global_settings.APP_CHANGELOG, font=(global_settings.font, 13), title=global_settings.language.LAYOUT_MAPPING.get('changelog_popup_title', 'Changelog'), icon=global_settings.icon)
         changelog_path.parent.mkdir(parents=True, exist_ok=True)
-        changelog_path.write_text(global_settings.APP_CHANGELOG, 'utf-8')
+        changelog_path.write_text(global_settings.APP_VERSION, 'utf-8')
 
 
 class Config:
@@ -163,6 +163,7 @@ class GUIConfig:
     def create_window(self):
         layout = [
             [Sg.Text(' ', size=(1, 1), key='settings_title', font=(global_settings.font, 20))],
+            [Sg.Text(' ', size=(1, 1), key='settings_help', font=(global_settings.font, 16))],
             [self.row('language_name', Sg.Combo(self.language_names, enable_events=True, readonly=True, default_value=global_settings.language_name, font=(global_settings.font, 12)))],
             [self.row('font', Sg.Combo(global_settings.fonts, enable_events=True, readonly=True, default_value=global_settings.font, font=(global_settings.font, 12)))],
             [self.row('autostart', Sg.Checkbox('', default=global_settings.autostart))],

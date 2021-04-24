@@ -89,8 +89,11 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.2.18'
-        self.APP_CHANGELOG = f'Updated to {self.APP_VERSION} \\o/\n\nAdded support for\nlocked/unlocked characters.'
+        self.APP_VERSION = '3.2.19'
+        self.APP_CHANGELOGS = {
+            'English': f'Updated to {self.APP_VERSION} \\o/\n\nAdded tooltips for settings.\n\nAlso, localized changelogs',
+            'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nДобавил подсказки к настройкам.\n\nТак же локализовал чейнджлоги\n(как вы могли заметить)',
+        }
 
         self.compiled = getattr(sys, 'frozen', False)
 
@@ -109,6 +112,8 @@ class Settings:
         if not self.languages:
             logger.error('No languages found. Program will not function with empty languages directory.')
         self.language_name = settings.get('language_name', 'English')
+
+        self.APP_CHANGELOG = self.APP_CHANGELOGS.get(self.language_name, self.APP_CHANGELOGS.get('English'))
 
         self.fonts = self.get_fonts()
         self.font = settings.get('font', 'Cousine Regular')
@@ -194,6 +199,14 @@ class Settings:
                 res_text = value[window[key].metadata].format(self) if window[key].metadata is not None else value.format(self)
                 if res_text != get_text(window[key]):
                     set_text(window[key], res_text)
+            tooltip_text = None
+            if hasattr(self.language, 'TOOLTIPS') and key in self.language.TOOLTIPS:  # First condition is for backwards-compatibility
+                tooltip_value = self.language.TOOLTIPS.get(key)
+                tooltip_text = tooltip_value[window[key].metadata].format(self) if window[key].metadata is not None else tooltip_value.format(self)
+            if tooltip_text != window[key].Tooltip:
+                window[key].Tooltip = tooltip_text
+                window[key].set_tooltip(tooltip_text)
+
         if window.Title != self.language.LAYOUT_MAPPING.get(window.metadata):
             window.Title = self.language.LAYOUT_MAPPING.get(window.metadata)
             window.set_title(window.Title)
@@ -302,5 +315,5 @@ def get_rotation():
         res = requests.get('https://sovamor.co/bhbot/rotation').json()
         return [character.lower() for character in res.get('rotation')]
     except Exception as e:
-        logger.debug(f'Error getting rotation: {e}')
+        logger.warning('rotation_error', e)
         return []
