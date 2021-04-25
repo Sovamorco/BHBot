@@ -69,19 +69,22 @@ class BrawlhallaProcess:
         return self.get_client_size() == self.get_window_size()
 
     def resize(self):
-        if self.get_window_size() != (1920, 1080):
-            logger.error('screen_support')
-            raise KeyboardInterrupt
+        window_size = self.get_window_size()
+        client_size = self.get_client_size()
+        w_border = window_size[0] - client_size[0]
+        h_border = window_size[1] - client_size[1]
+        while self.get_client_size() != (1920, 1080):  # getwindowsize or getclientsize or setwindowpos or something else is weird so it sometimes doesnt work first try
+            win32gui.SetWindowPos(self.window, 0, 0, 0, 1920 + w_border, 1080 + h_border, win32con.SWP_NOMOVE | win32con.SWP_NOZORDER)
 
     def move_off_screen(self):
         logger.debug('move_offscreen')
         w, h = Sg.Window.get_screen_size()
-        win32gui.MoveWindow(self.window, w * 4, h * 4, 1920, 1080, False)
+        win32gui.SetWindowPos(self.window, 0, w * 4, h * 4, 0, 0, win32con.SWP_NOSIZE | win32con.SWP_NOZORDER)
 
     def make_transparent(self):
         style = win32gui.GetWindowLong(self.window, win32con.GWL_EXSTYLE)
         win32gui.ShowWindow(self.window, win32con.SW_HIDE)
-        style |= win32con.WS_EX_COMPOSITED | win32con.WS_EX_LAYERED | win32con.WS_EX_TRANSPARENT | win32con.WS_EX_TOPMOST | win32con.WS_EX_TOOLWINDOW
+        style |= win32con.WS_EX_COMPOSITED | win32con.WS_EX_LAYERED | win32con.WS_EX_TRANSPARENT | win32con.WS_EX_TOOLWINDOW | win32con.WS_EX_NOACTIVATE
         style &= ~win32con.WS_EX_APPWINDOW
         win32gui.SetWindowLong(self.window, win32con.GWL_EXSTYLE, style)
         sleep(1)
@@ -94,7 +97,7 @@ class BrawlhallaProcess:
 
     def make_screenshot(self):
         import win32ui
-        w, h = self.get_window_size()
+        w, h = self.get_client_size()
 
         window_dc = win32gui.GetWindowDC(self.window)
         mfc_dc = win32ui.CreateDCFromHandle(window_dc)

@@ -83,7 +83,7 @@ TOOLTIPS = {
 MESSAGES = {
     'waiting_for_bh_window': 'Waiting for brawlhalla window',
     'found_bh': 'Found Brawlhalla',
-    'windowed_mode': 'Windowed mode, restarting',
+    'not_windowed_mode': 'Not windowed mode, restarting',
     'stealth_mode': 'Entering stealth mode',
     'initialized': 'Initialized',
     'initial_on_exit': '\nSession Stats:\n\nTime running: %s\nGames completed: %s\nCrashes/restarts: %s\nXP earned: %s\n',

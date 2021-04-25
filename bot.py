@@ -49,23 +49,28 @@ class BrawlhallaBot:
             self.brawlhalla.kill()
             sleep(5)
 
+        count = 300
         while not self.find_brawlhalla():
             logger.debug('waiting_for_bh_window')
-            webbrowser.open('steam://launch/291550')
-            sleep(10)
+            count += 1
+            if count >= 300:
+                webbrowser.open('steam://launch/291550')
+                count = 0
+
+        self.virtual_input = VirtualInput(self.brawlhalla, self.hotkeys)
+        self.level_definer = LevelDefiner(self.brawlhalla)
 
         logger.info('found_bh')
         self.check_stuff()
+        self.virtual_input.esc()  # idk why but it puts bh into windowed
         sleep(1)
-        if not self.brawlhalla.fullscreen:
-            logger.info('windowed_mode')
+        if self.brawlhalla.fullscreen:
+            logger.info('not_windowed_mode')
             raise NotRespondingError
         self.brawlhalla.resize()
         if self.config.stealth:
             logger.info('stealth_mode')
             self.brawlhalla.hide()
-        self.virtual_input = VirtualInput(self.brawlhalla, self.hotkeys)
-        self.level_definer = LevelDefiner(self.brawlhalla)
 
     def initialize(self):
         self.ensure_brawlhalla()
@@ -249,8 +254,8 @@ class BrawlhallaBot:
         self.select_menu_item('system_settings', self.virtual_input.down)
 
     def mute(self):
-        logger.info('muting')
         self.go_to_menu()
+        logger.info('muting')
         self.select_settings()
         self.select_system_settings()
         self.execute_steps(self.virtual_input.quick, *([self.virtual_input.left] * 10), self.virtual_input.down, *([self.virtual_input.left] * 10), self.virtual_input.dodge, self.virtual_input.dodge)

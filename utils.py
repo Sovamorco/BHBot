@@ -10,10 +10,12 @@ from pathlib import Path
 
 import PySimpleGUI as Sg
 import requests
-from pyupdater.client import Client
+from pyupdater.client import Client, log
 
 from client_config import ClientConfig
 from font_loader import get_font_name, load_font
+
+log.handlers = []
 
 
 def get_text(element):
@@ -89,10 +91,10 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.2.20'
+        self.APP_VERSION = '3.3.0'
         self.APP_CHANGELOGS = {
-            'English': f'Updated to {self.APP_VERSION} \\o/\n\nAdded tooltips for settings.\n\nAlso, localized changelogs',
-            'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nДобавил подсказки к настройкам.\n\nТак же локализовал чейнджлоги\n(как вы могли заметить)',
+            'English': f'Updated to {self.APP_VERSION} \\o/\n\nMade the bot work with\nany screen resolution\n\n(now game has to be in windowed mode)\n((although bot should put it as such))',
+            'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nТеперь бот работает с\nлюбыми разрешениями экрана\n\n(игра должна быть в оконном режиме)\n((хотя бот сам должен его ставить))',
         }
 
         self.compiled = getattr(sys, 'frozen', False)
@@ -165,7 +167,7 @@ class Settings:
 
     @property
     def not_save(self):
-        return ['fonts', 'languages', 'gui_handler', 'loaded_modes', 'new_version', 'compiled', 'APP_CHANGELOG', 'icon']
+        return ['fonts', 'languages', 'gui_handler', 'loaded_modes', 'new_version', 'compiled', 'APP_CHANGELOG', 'APP_CHANGELOGS', 'icon']
 
     def set_debug_state(self):
         if self.gui_handler:
@@ -240,11 +242,11 @@ class Settings:
         json.dump(obj, self.installation_info_location.open('w+'))
 
     def clear_old_logs(self):
-        for log in self.logs_folder.glob('????????-??????.log'):
-            dt = log.name[:-4]
+        for _log in self.logs_folder.glob('????????-??????.log'):
+            dt = _log.name[:-4]
             dt = datetime.strptime(dt, '%Y%m%d-%H%M%S')
             if datetime.now() - dt > timedelta(days=3):
-                log.unlink()
+                _log.unlink()
 
     def add_file_handlers(self):
         self.logs_folder.mkdir(parents=True, exist_ok=True)
