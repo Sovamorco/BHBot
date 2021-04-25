@@ -91,7 +91,7 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.3.0'
+        self.APP_VERSION = '3.3.1'
         self.APP_CHANGELOGS = {
             'English': f'Updated to {self.APP_VERSION} \\o/\n\nMade the bot work with\nany screen resolution\n\n(now game has to be in windowed mode)\n((although bot should put it as such))',
             'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nТеперь бот работает с\nлюбыми разрешениями экрана\n\n(игра должна быть в оконном режиме)\n((хотя бот сам должен его ставить))',

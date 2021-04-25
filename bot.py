@@ -49,11 +49,11 @@ class BrawlhallaBot:
             self.brawlhalla.kill()
             sleep(5)
 
-        count = 300
+        count = 10000
         while not self.find_brawlhalla():
             logger.debug('waiting_for_bh_window')
             count += 1
-            if count >= 300:
+            if count >= 10000:
                 webbrowser.open('steam://launch/291550')
                 count = 0
 
