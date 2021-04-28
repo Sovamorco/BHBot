@@ -91,10 +91,10 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.3.2'
+        self.APP_VERSION = '3.3.3'
         self.APP_CHANGELOGS = {
-            'English': f'Updated to {self.APP_VERSION} \\o/\n\nFixed bot not automatically\naccepting event popup',
-            'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nПочинил то, что бот\nне принимает награду события\nавтоматически',
+            'English': f'Updated to {self.APP_VERSION} \\o/\n\nFixed incorrect detection\nof locked characters',
+            'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nПочинил неверное определение\nзаблокированных персонажей',
         }
 
         self.compiled = getattr(sys, 'frozen', False)
