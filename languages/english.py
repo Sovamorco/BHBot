@@ -95,6 +95,7 @@ MESSAGES = {
     'queued_recalc': 'Restarting for queued character recalculation',
     'not_in_menu': 'Not in menu',
     'collecting_bonus': 'Collecting daily bonus',
+    'accepting_event_popup': 'Accepting event bonus',
     'offline': 'Offline, trying to connect',
     'item_not_selected': '%s not selected',
     'sorting_by_date': 'Sorting by date',

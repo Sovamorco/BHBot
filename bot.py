@@ -146,6 +146,7 @@ class BrawlhallaBot:
             'system_settings_selected': (1607, 195, (39, 85, 136)),
             'on_rewards_screen': (1035, 121, (255, 255, 255)),
             'level_up': (1363, 320, (19, 133, 51)),
+            'popup': (940, 790, (247, 248, 249)),
         }
 
     @property
@@ -224,6 +225,9 @@ class BrawlhallaBot:
             sleep(1)
             if self.has_state('bonus'):
                 logger.info('collecting_bonus')
+                self.virtual_input.quick()
+            if self.has_state('popup'):
+                logger.info('accepting_event_popup')
                 self.virtual_input.quick()
             if self.has_state('offline'):
                 logger.info('offline')

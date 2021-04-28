@@ -95,6 +95,7 @@ MESSAGES = {
     'queued_recalc': 'Перезапускаю игру для запланированного пересчета опыта персонажей',
     'not_in_menu': 'Не в меню',
     'collecting_bonus': 'Собираю награду за вход',
+    'accepting_event_popup': 'Принимаю награду события',
     'offline': 'Не в сети, пытаюсь подключиться',
     'item_not_selected': '%s не выбран',
     'sorting_by_date': 'Сортирую по дате',
