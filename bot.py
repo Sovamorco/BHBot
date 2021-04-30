@@ -29,7 +29,6 @@ class BrawlhallaBot:
         self.level_definer = None
 
         self.last_pause = time()
-        self.queued_recalculation = False
         self.games_completed = 0
         self.total_xp = 0
         self.total_gold = 0
@@ -284,9 +283,9 @@ class BrawlhallaBot:
                 _characters.append(Character(character, level, xp, unlocked))
                 logger.debug(_characters[-1])
                 self.virtual_input.right()
-                sleep(.5)
+                sleep(.15)
             self.virtual_input.down()
-            sleep(.5)
+            sleep(.15)
         unlocked_characters = [character.name for character in _characters if character.unlocked]
         locked_characters = [character.name for character in _characters if not character.unlocked]
         fixed_characters = unlocked_characters + ['random'] + locked_characters
@@ -313,7 +312,6 @@ class BrawlhallaBot:
         logger.debug('pixel_xp', xp)
         if not abs(xp - calculated_xp) <= calculated_xp / 3:
             logger.info('xp_discrep')
-            self.queued_recalculation = True
             return False
         return True
 
@@ -359,18 +357,17 @@ class BrawlhallaBot:
             self.duration = self.mode.next_duration
 
     def reset_xp(self):
+        self.go_to_menu()
         waiting_start = time()
         logger.info('wait_for_xp_reset', self.config.auto_stop_duration)
         while time() - waiting_start < self.config.auto_stop_duration * 60:
             logger.debug('wait_remaining', int(waiting_start + self.config.auto_stop_duration * 60 - time()))
             self.check_stuff()
-            sleep(30)
+            sleep(1)
         self.last_pause = time()
-        if self.queued_recalculation:
-            self.characters = []
-            self.unlocked_characters = []
-            self.queued_recalculation = False
-            raise QueuedRecalculation
+        self.characters = []
+        self.unlocked_characters = []
+        raise QueuedRecalculation
 
     def setup_lobby(self):
         # noinspection PyTypeChecker
@@ -399,7 +396,8 @@ class BrawlhallaBot:
         self.games_completed += 1
         calc_xp = get_duration_xp(self.duration)
         time_to_sleep = self.config.auto_stop and (
-                (not self.config.auto_detect_auto_stop and time() - self.last_pause > self.config.auto_stop_frequency * 3600) or (self.config.auto_detect_auto_stop and not self.validate_level()))
+                (not self.config.auto_detect_auto_stop and time() - self.last_pause > self.config.auto_stop_frequency * 3600)
+                or (self.config.auto_detect_auto_stop and not self.validate_level()))
         gold_for_level_up = self.character.add_xp(calc_xp)
         calc_gold = get_duration_gold(self.duration) + gold_for_level_up
         self.total_xp += calc_xp
