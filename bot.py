@@ -283,9 +283,9 @@ class BrawlhallaBot:
                 _characters.append(Character(character, level, xp, unlocked))
                 logger.debug(_characters[-1])
                 self.virtual_input.right()
-                sleep(.15)
+                sleep(.5)
             self.virtual_input.down()
-            sleep(.15)
+            sleep(.5)
         unlocked_characters = [character.name for character in _characters if character.unlocked]
         locked_characters = [character.name for character in _characters if not character.unlocked]
         fixed_characters = unlocked_characters + ['random'] + locked_characters
@@ -363,7 +363,7 @@ class BrawlhallaBot:
         while time() - waiting_start < self.config.auto_stop_duration * 60:
             logger.debug('wait_remaining', int(waiting_start + self.config.auto_stop_duration * 60 - time()))
             self.check_stuff()
-            sleep(1)
+            sleep(30)
         self.last_pause = time()
         if self.queued_recalculation:
             self.characters = []

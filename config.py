@@ -78,6 +78,9 @@ class Config:
         except Exception as e:
             logger.error('cant_save_config', e)
 
+    def __str__(self):
+        return global_settings.messages.get('config', 'Missing "config" entry in language').format(self)
+
 
 # noinspection PyUnresolvedReferences
 class GUIConfig:

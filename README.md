@@ -2,6 +2,10 @@
 
 [Этот файл доступен на Русском языке](README_RU.md)
 
+This branch is for beta updates.
+Can contain some bugs, not yet fully tested, but has some cool new features that may never make it to stable.
+Please [open an issue](https://github.com/sovamorco/bhbot/issues) if you find any bugs :)
+
 Gold/XP farming bot for Brawlhalla
 
 Heavily inspired by [BrawlhallaEZ](https://github.com/jamunano/BrawlhallaEZ)

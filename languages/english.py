@@ -126,7 +126,7 @@ MESSAGES = {
     'test': 'Test',
     'downloading': 'Downloading: %s%%',
     'downloaded': 'Download completed in %s',
-    'resize': 'Current game window size: %sx%s. Resizing to 1920x1080',
+    'resize': 'Game window size: %sx%s\nGame client area size: %sx%s\nScreen size: %sx%s',
     'move_offscreen': 'Moving game window off-screen',
     'update_total_stats': 'Updating all-time stats',
     'total_stats': '\nAll-Time Stats:\n\nGames completed: %s\nXP earned: %s\nGold earned: %s\nTime running: %s\n',
@@ -134,4 +134,29 @@ MESSAGES = {
     'rotation_error': 'Error getting character rotation:\n%s',
     'muting': 'Muting sounds',
     'reconnected': 'Reconnected',
+    'settings': 'Current settings:\n'
+                '------------------------\n'
+                'App Name: {0.APP_NAME}\n'
+                'App Version: {0.APP_VERSION}\n'
+                'Compiled: {0.compiled}\n'
+                'Branch: {0.branch}\n'
+                'New version: {0.new_version}\n'
+                'Language: {0.language_name}\n'
+                'Font: {0.font}\n'
+                'Autostart: {0.autostart}\n'
+                'Debug: {0.debug}\n'
+                '------------------------\n',
+    'config': 'Current config:\n'
+              '------------------------\n'
+              'Mode: {0.mode_name}\n'
+              'Character: {0.character}\n'
+              'Duration: {0.duration}\n'
+              'Auto-stop: {0.auto_stop}\n'
+              'Auto detect auto-stop: {0.auto_detect_auto_stop}\n'
+              'Auto-stop frequency: {0.auto_stop_frequency}\n'
+              'Auto-stop duration: {0.auto_stop_duration}\n'
+              'Bots: {0.bots}\n'
+              'Stealth: {0.stealth}\n'
+              'Mute: {0.mute}\n'
+              '------------------------\n',
 }

@@ -91,10 +91,10 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.3.3'
+        self.APP_VERSION = '3.3.4-beta'
         self.APP_CHANGELOGS = {
-            'English': f'Updated to {self.APP_VERSION} \\o/\n\nFixed incorrect detection\nof locked characters',
-            'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nПочинил неверное определение\nзаблокированных персонажей',
+            'English': f'Updated to {self.APP_VERSION} \\o/\n\nCPU optimizations\nand better logging',
+            'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nПонижение нагрузки на\nпроцессор и улучшенния логов',
         }
 
         self.compiled = getattr(sys, 'frozen', False)
@@ -285,6 +285,9 @@ class Settings:
         if not self.stats_location.exists():
             return {}
         return json.load(self.stats_location.open('r'))
+
+    def __str__(self):
+        return self.messages.get('settings', 'Missing "settings" entry in language').format(self)
 
 
 global_settings = Settings.load()

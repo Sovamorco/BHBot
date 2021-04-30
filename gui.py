@@ -78,7 +78,10 @@ class GUI:
             self.queue.put_nowait('STOP')
         else:
             logger.info('start_bot')
-            bot = BrawlhallaBot(Config.load(), Hotkeys.load(), self.queue)
+            config = Config.load()
+            logger.debug(global_settings)
+            logger.debug(config)
+            bot = BrawlhallaBot(config, Hotkeys.load(), self.queue)
             self.bot_thread = threading.Thread(target=bot.main_loop, daemon=True)
             self.bot_thread.start()
 

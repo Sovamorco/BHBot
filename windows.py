@@ -71,6 +71,7 @@ class BrawlhallaProcess:
     def resize(self):
         window_size = self.get_window_size()
         client_size = self.get_client_size()
+        logger.debug('resize', *window_size, *client_size, *Sg.Window.get_screen_size())
         w_border = window_size[0] - client_size[0]
         h_border = window_size[1] - client_size[1]
         while self.get_client_size() != (1920, 1080):  # getwindowsize or getclientsize or setwindowpos or something else is weird so it sometimes doesnt work first try
