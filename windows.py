@@ -4,6 +4,7 @@ from time import sleep
 
 import psutil
 import pywintypes
+import win32api
 import win32con
 import win32gui
 import win32process
@@ -11,6 +12,8 @@ import winxpgui
 from PIL import Image
 
 from utils import *
+
+BELOW_NORMAL_PRIORITY_CLASS = 0x4000  # Why is this not in win32con??? It has literally all other priority classes..
 
 
 class NotRespondingError(Exception):
@@ -121,6 +124,11 @@ class BrawlhallaProcess:
         mfc_dc.DeleteDC()
         win32gui.ReleaseDC(self.window, window_dc)
         return im
+
+    def set_low_priority(self):
+        handle = win32api.OpenProcess(win32con.PROCESS_SET_INFORMATION, True, self.process.pid)
+        win32process.SetPriorityClass(handle, BELOW_NORMAL_PRIORITY_CLASS)
+        win32api.CloseHandle(handle)
 
 
 class Singleton:

@@ -70,6 +70,7 @@ class BrawlhallaBot:
         if self.config.stealth:
             logger.info('stealth_mode')
             self.brawlhalla.hide()
+            self.brawlhalla.set_low_priority()
 
     def initialize(self):
         self.ensure_brawlhalla()

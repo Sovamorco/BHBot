@@ -91,10 +91,10 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.3.6-beta'
+        self.APP_VERSION = '3.3.7-beta'
         self.APP_CHANGELOGS = {
-            'English': f'Updated to {self.APP_VERSION} \\o/\n\nRolled back most of the changes',
-            'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nОткатил большую часть изменений',
+            'English': f'Updated to {self.APP_VERSION} \\o/\n\nNow Brawlhalla priority is set\nto below normal in stealth mode',
+            'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nТеперь приоритет игры в\nстелс-режиме ставится на ниже среднего',
         }
 
         self.compiled = getattr(sys, 'frozen', False)
