@@ -91,7 +91,7 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.3.4-beta'
+        self.APP_VERSION = '3.3.5-beta'
         self.APP_CHANGELOGS = {
             'English': f'Updated to {self.APP_VERSION} \\o/\n\nCPU optimizations\nand better logging',
             'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nПонижение нагрузки на\nпроцессор и улучшенния логов',
