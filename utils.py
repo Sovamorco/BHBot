@@ -10,12 +10,15 @@ from pathlib import Path
 
 import PySimpleGUI as Sg
 import requests
-from pyupdater.client import Client, log
+from pyupdater.client import Client
+# noinspection PyProtectedMember
+from pyupdater import rfh, log
 
 from client_config import ClientConfig
 from font_loader import get_font_name, load_font
 
-log.handlers = []
+rfh.close()
+log.removeHandler(rfh)
 
 
 def get_text(element):
@@ -91,10 +94,10 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.3.7-beta'
+        self.APP_VERSION = '3.3.8-beta'
         self.APP_CHANGELOGS = {
-            'English': f'Updated to {self.APP_VERSION} \\o/\n\nNow Brawlhalla priority is set\nto below normal in stealth mode',
-            'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nТеперь приоритет игры в\nстелс-режиме ставится на ниже среднего',
+            'English': f'Updated to {self.APP_VERSION} \\o/\n\nRemoved pyupdater logging\n(does literally nothing)',
+            'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nВыключил логи pyupdater\'а\n(ничего не поменялось)',
         }
 
         self.compiled = getattr(sys, 'frozen', False)
