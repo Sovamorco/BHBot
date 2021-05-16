@@ -49,12 +49,11 @@ class Character:
     def add_xp(self, xp):
         gold = 0
         self.xp += xp
-        if self.level:
-            while self.xp > levels_xp[self.level]:
-                self.xp -= levels_xp[self.level]
-                self.level += 1
-                if self.level in gold_levels:
-                    gold += 120
+        while levels_xp[self.level] and self.xp > levels_xp[self.level]:
+            self.xp -= levels_xp[self.level]
+            self.level += 1
+            if self.level in gold_levels:
+                gold += 120
         return gold
 
     def get_xp_to_level(self, level):
@@ -70,10 +69,10 @@ class Character:
 
     @property
     def next_gold_level(self):
-        for i in range(self.level + 1, 101):
-            if i in gold_levels:
-                return i
-        return 100
+        try:
+            return next(filter(lambda i: i in gold_levels, range(self.level + 1, 101)))
+        except StopIteration:
+            return 101
 
     @property
     def xp_to_next_gold(self):
@@ -88,7 +87,7 @@ class Character:
 
     @staticmethod
     def get_duration_for_xp(xp, maximum=15):
-        return min(ceil((xp + 1) / 41), maximum)
+        return ceil(min((xp + 1) / 41, maximum))
 
     def get_duration_to_next_level(self, maximum=15):
         return self.get_duration_for_xp(self.xp_to_next_level, maximum)

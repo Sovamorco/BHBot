@@ -94,10 +94,10 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.3.8-beta'
+        self.APP_VERSION = '3.3.9-beta'
         self.APP_CHANGELOGS = {
-            'English': f'Updated to {self.APP_VERSION} \\o/\n\nRemoved pyupdater logging\n(does literally nothing)',
-            'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nВыключил логи pyupdater\'а\n(ничего не поменялось)',
+            'English': f'Updated to {self.APP_VERSION} \\o/\n\nAdded support for level 100 characters',
+            'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nДобавил поддержку персонажей 100 уровня',
         }
 
         self.compiled = getattr(sys, 'frozen', False)

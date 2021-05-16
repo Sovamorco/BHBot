@@ -31,10 +31,16 @@ second_digit_dict = dict(((key, tuple(((x + second_digit_diff, y) for x, y in va
 
 single_digit_dict = dict(((key, tuple(((x + single_digit_diff, y) for x, y in value))) for key, value in first_digit_dict.items()))
 
-levels_xp = [0, 210, 368, 455, 542, 628, 737, 867, 997, 1127, 1278, 1430, 1582, 1733, 1907, 2080, 2253, 2427, 2622, 2817, 3012, 3207, 3402, 3618, 3813, 4030, 4247, 4463, 4680,
-             4918, 5135, 5373, 5612, 5850, 6088, 6372, 6565, 6803, 7063, 7302, 7562, 7800, 8060, 8320, 8580, 8840, 9122, 9382, 9642, 9923, 10183, 10465, 10747, 11007, 11288, 11570,
-             11852, 12113, 12415, 12718, 13000, 13282, 13585, 13867, 14170, 14473, 14755, 15058, 15362, 15665, 15968, 16272, 16575, 16878, 17182, 17507, 17810, 18113, 18438, 18742,
-             19067, 19370, 19695, 20020, 20323, 20648, 20973, 21298, 21623, 21948, 22273, 22598, 22923, 23270, 23595, 23920, 24267, 24592, 24917, 25263]
+level_hundred_conditions = ((2, 8), (19, 45), (39, 12), (68, 39), (82, 12), (84, 42))
+
+levels_xp = [
+    0,  # infinite xp if lvl 0 (undefined)
+    210, 368, 455, 542, 628, 737, 867, 997, 1127, 1278, 1430, 1582, 1733, 1907, 2080, 2253, 2427, 2622, 2817, 3012, 3207, 3402, 3618, 3813, 4030, 4247, 4463, 4680,
+    4918, 5135, 5373, 5612, 5850, 6088, 6372, 6565, 6803, 7063, 7302, 7562, 7800, 8060, 8320, 8580, 8840, 9122, 9382, 9642, 9923, 10183, 10465, 10747, 11007, 11288, 11570,
+    11852, 12113, 12415, 12718, 13000, 13282, 13585, 13867, 14170, 14473, 14755, 15058, 15362, 15665, 15968, 16272, 16575, 16878, 17182, 17507, 17810, 18113, 18438, 18742,
+    19067, 19370, 19695, 20020, 20323, 20648, 20973, 21298, 21623, 21948, 22273, 22598, 22923, 23270, 23595, 23920, 24267, 24592, 24917, 25263,
+    float('inf')  # infinite xp if lvl 100 (max lvl)
+]
 
 gold_levels = list(range(7, 20, 2)) + list(range(21, 101))
 
@@ -54,19 +60,31 @@ class LevelNotDetected(Exception):
 class LevelDefiner:
     def __init__(self, brawlhalla):
         self.brawlhalla = brawlhalla
-    
+
+    def _get_single_digit_level(self, image):
+        return int(self.get_single_digit(image))
+
+    def _get_double_digit_level(self, image):
+        return int(self.get_first_digit(image) + self.get_second_digit(image))
+
+    @staticmethod
+    def _get_level_hundred(image):
+        if all(image.getpixel(pos) == font_color for pos in level_hundred_conditions):
+            return 100
+        raise TypeError
+
     def get_level(self):
         screenshot = self.brawlhalla.make_screenshot()
         level = screenshot.crop(level_bbox)
-        try:
-            return int(self.get_first_digit(level) + self.get_second_digit(level))
-        except TypeError:
+        for f in [self._get_single_digit_level, self._get_double_digit_level, self._get_level_hundred]:
             try:
-                return int(self.get_single_digit(level))
+                # noinspection PyArgumentList
+                return f(level)
             except TypeError:
-                logger.error('level_error')
-                raise LevelNotDetected
-    
+                pass
+        logger.error('level_error')
+        raise LevelNotDetected
+
     def get_percentage(self):
         count = -3
         screenshot = self.brawlhalla.make_screenshot()
@@ -88,8 +106,10 @@ class LevelDefiner:
                 count += 1
         perc = count / bar.width
         return perc
-    
+
     def get_xp(self, level, reward=False):
+        if level == 100:
+            return 0
         return int((self.get_reward_percentage() if reward else self.get_percentage()) * levels_xp[level])
 
     def get_unlocked(self):
@@ -97,19 +117,16 @@ class LevelDefiner:
         return screenshot.getpixel(locked_pixel) != locked_color
 
     @staticmethod
-    def get_first_digit(image):
-        for digit in first_digit_dict:
-            if all(image.getpixel(pos) == font_color for pos in first_digit_dict[digit]):
+    def get_digit(conditions, image):
+        for digit in conditions:
+            if all(image.getpixel(pos) == font_color for pos in conditions[digit]):
                 return digit
 
-    @staticmethod
-    def get_second_digit(image):
-        for digit in second_digit_dict:
-            if all(image.getpixel(pos) == font_color for pos in second_digit_dict[digit]):
-                return digit
+    def get_first_digit(self, image):
+        return self.get_digit(first_digit_dict, image)
 
-    @staticmethod
-    def get_single_digit(image):
-        for digit in single_digit_dict:
-            if all(image.getpixel(pos) == font_color for pos in single_digit_dict[digit]):
-                return digit
+    def get_second_digit(self, image):
+        return self.get_digit(second_digit_dict, image)
+
+    def get_single_digit(self, image):
+        return self.get_digit(single_digit_dict, image)

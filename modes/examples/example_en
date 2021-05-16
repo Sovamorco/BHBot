@@ -52,13 +52,13 @@ class Example(Mode):
 # xp - int, xp of character on current level (initially 0 if parse_character_levels is False);
 # unlocked - bool, if the character is unlocked;
 # total_xp - int, total xp of character (equals to xp if parse_character_levels is False);
-# xp_to_next_level - int, xp required to get to the next level;
-# xp_to_next_gold - int, xp required to get to the next gold reward;
+# xp_to_next_level - int or inf if lvl 100, xp required to get to the next level;
+# xp_to_next_gold - int or inf if lvl 100, xp required to get to the next gold reward;
 # get_duration_to_next_level(maximum) - duration required to get to next level (max maximum);
 # duration_to_next_level - get_duration_to_next_level();
 # get_duration_to_next_gold(maximum) - duration required to get to next gold reward (max maximum);
 # duration_to_next_gold - get_duration_to_next_gold();
-# next_gold_level - next level on which character will get a gold reward (max 100);
+# next_gold_level - next level on which character will get a gold reward (max 101);
 # get_xp_to_level(level) - xp required to get to <level> level (min 1);
 # get_duration_for_xp(xp, maximum=15) - duration required to earn <xp> xp (max <maximum>).
 
