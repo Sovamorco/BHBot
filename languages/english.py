@@ -118,7 +118,7 @@ MESSAGES = {
     'return_to_lobby': 'Going back to lobby',
     'no_modes': 'No modes found. Program will not function with empty modes directory.',
     'old_config': 'Config was made for older bot version. Please, make sure everything is up to date.',
-    'level_error': 'Error recognizing level\nBot only works with levels 1-99',
+    'level_error': 'Error recognizing level\nBot only works with levels 1-100',
     'cant_save_hotkeys': 'Could not save hotkeys. Exception: %s',
     'cant_save_config': 'Could not save config. Exception: %s',
     'start_bot': 'Starting the bot',
