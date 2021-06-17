@@ -94,10 +94,10 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.3.10'
+        self.APP_VERSION = '3.3.11'
         self.APP_CHANGELOGS = {
-            'English': f'Updated to {self.APP_VERSION} \\o/\n\nAdded support for level 100 characters',
-            'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nДобавил поддержку персонажей 100 уровня',
+            'English': f'Updated to {self.APP_VERSION} \\o/\n\nFixed bugged menu for new update',
+            'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nПочинил сломанное меню в новом обновлении',
         }
 
         self.compiled = getattr(sys, 'frozen', False)
