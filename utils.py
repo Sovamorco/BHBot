@@ -94,10 +94,10 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.3.11'
+        self.APP_VERSION = '3.3.12'
         self.APP_CHANGELOGS = {
-            'English': f'Updated to {self.APP_VERSION} \\o/\n\nFixed bugged menu for new update',
-            'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nПочинил сломанное меню в новом обновлении',
+            'English': f'Updated to {self.APP_VERSION} \\o/\n\nNow the lobby is set to fully private during setup',
+            'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nТеперь лобби создается полностью приватным',
         }
 
         self.compiled = getattr(sys, 'frozen', False)

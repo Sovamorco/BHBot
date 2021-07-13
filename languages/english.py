@@ -67,7 +67,8 @@ TOOLTIPS = {
                         'This option enables automatically stopping the bot to reset said limit\n'
                         'Otherwise, bot will continue to work but will get close to no xp/gold',
     'auto_detect_auto_stop_column': 'Enables automatic detection of xp limit from xp earnings after the game\n'
-                                    'Disables following 2 options',
+                                    'Disables following 2 options\n'
+                                    '!!Can be unstable for character levels higher than 60!!',
     'auto_stop_frequency_column': 'How often will bot stop to reset xp/gold limit\n'
                                   'From experience, 4.5-5 hours is average time needed to get to the limit',
     'auto_stop_duration_column': 'How much time bot will wait to reset xp/gold limit\n'

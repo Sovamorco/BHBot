@@ -374,7 +374,7 @@ class BrawlhallaBot:
         # noinspection PyTypeChecker
         steps = [self.open_settings] + [self.virtual_input.right] * 3 + [self.virtual_input.down] * 3 + [self.virtual_input.left] * (15 - self.duration) + [self.virtual_input.down] * 2 + [
             self.virtual_input.left] * 5 + [self.virtual_input.down] * 3 + [self.virtual_input.left] * (3 - self.config.bots) + [self.virtual_input.right] * (self.config.bots - 3) + [
-                    self.virtual_input.rbr] + [self.virtual_input.down] * 6 + [self.virtual_input.left, self.virtual_input.quick]
+                    self.virtual_input.rbr] + [self.virtual_input.down] * 3 + [self.virtual_input.left, self.virtual_input.down] * 3 + [self.virtual_input.left, self.virtual_input.quick]
         self.execute_steps(*steps)
 
     def add_bots(self):
