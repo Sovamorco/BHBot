@@ -2,13 +2,9 @@
 
 [This file is available in English](README.md)
 
-Это ветка для бета-обновлений.
-Они могут содержать баги и не до конца протестированные функции, но так же содержат новейшие обновления которые могут не попасть в основную ветку.
-Пожалуйста [откройте запрос](https://github.com/sovamorco/bhbot/issues) если найдете какие-либо проблемы :)
-
 Бот для фарма опыта/золота в Brawlhalla
 
-Идея взята из [BrawlhallaEZ](https://github.com/jamunano/BrawlhallaEZ)
+Идея взята у [BrawlhallaEZ](https://github.com/jamunano/BrawlhallaEZ)
 
 
 **ВНИМАНИЕ:** Бот изначально был сделан для личного использования.
