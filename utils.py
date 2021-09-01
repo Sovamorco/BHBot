@@ -10,9 +10,9 @@ from pathlib import Path
 
 import PySimpleGUI as Sg
 import requests
-from pyupdater.client import Client
 # noinspection PyProtectedMember
 from pyupdater import rfh, log
+from pyupdater.client import Client
 
 from client_config import ClientConfig
 from font_loader import get_font_name, load_font
@@ -94,7 +94,7 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.3.13'
+        self.APP_VERSION = '3.3.14'
         self.APP_CHANGELOGS = {
             'English': f'Updated to {self.APP_VERSION} \\o/\n\nFixed issues with new menu',
             'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nПочинил проблемы с новым меню',
