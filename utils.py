@@ -94,14 +94,16 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.3.14-beta'
+        self.APP_VERSION = '3.3.15-beta'
         self.APP_CHANGELOGS = {
             'English': [f'Updated to {self.APP_VERSION} \\o/',
                         'If it\'s your first time using the bot or seeing this message, please click "Instructions" and read them carefully',
-                        '- Added Instructions'],
+                        '- Added instructions',
+                        '- Fixed issues with new menu'],
             'Русский': [f'Обновился до {self.APP_VERSION} \\o/',
                         'Если вы используете бота или видите это сообщение впервые, пожалуйста, нажмите на "Инструкции" и тщательно их прочтите',
-                        '- Добавил инструкции']
+                        '- Добавил инструкции',
+                        '- Починил проблемы с новым меню']
         }
 
         self.compiled = getattr(sys, 'frozen', False)
