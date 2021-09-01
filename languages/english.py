@@ -8,6 +8,7 @@ LAYOUT_MAPPING = {
     'press_start': ['Press "Start" to start the bot', 'Press "Stop" to stop the bot'],
     'toggle': ['Start', 'Stop'],
     'settings': 'Settings',
+    'instructions': 'Instructions',
     'exit': 'Exit',
     'test': 'Test',
     'update_available_title': 'Update available!',
@@ -46,6 +47,19 @@ LAYOUT_MAPPING = {
     'quick_text': 'Light attack',
     'dodge_text': 'Dodge',
     'heavy_text': 'Heavy attack',
+    # Instructions window
+    'instructions_window_title': 'Instructions',
+    'instructions_contents': ['Bot usage instructions:',
+                              '1. VERY IMPORTANT\n'
+                              'Either use stealth mode option in the bot, or DO NOT disturb the bot in any way. '
+                              'Moving the mouse over Brawlhalla window, resizing or moving window itself or using your keyboard with Brawlhalla in focus '
+                              'while the bot is working may cause unexpected consequences '
+                              'like picking wrong characters or even making purchasese in Mallhalla or in Battle pass. '
+                              'If you notice that you accidentally moved something, restart the bot (but better use stealth mode, really)',
+                              '2. Make sure your ingame language is set to English',
+                              '3. Make sure "Collapse crossovers" setting is enabled',
+                              '4. Configure everything else as you prefer and click "Start"',
+                              'Enjoy c:'],
     # Popups
     'changelog_popup_title': 'Changelog',
 }

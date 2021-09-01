@@ -49,7 +49,7 @@ class GUI:
                           write_only=True, reroute_cprint=True, reroute_stderr=global_settings.compiled, font=(global_settings.font, 12), text_color='red')]
         ]
 
-        buttons = [Sg.Button('', key='toggle', font=(global_settings.font, 12), metadata=0),
+        buttons = [Sg.Button('', key='toggle', font=(global_settings.font, 12), metadata=0), Sg.Button('', key='instructions', font=(global_settings.font, 12)),
                    Sg.Button('', key='settings', font=(global_settings.font, 12)), Sg.Button('', key='exit', font=(global_settings.font, 12))]
         if not global_settings.compiled:
             buttons.append(Sg.Button('', key='test', font=(global_settings.font, 12)))
@@ -88,17 +88,27 @@ class GUI:
     def refresh_buttons(self):
         if self.downloading_new_version:
             self.window['toggle'].update(disabled=True)
+            self.window['instructions'].update(disabled=True)
             self.window['settings'].update(disabled=True)
             self.window['update_available_button'].update(disabled=True)
             self.window['exit'].update(disabled=True)
         elif self.bot_thread and self.bot_thread.is_alive():
             self.window['toggle'].metadata = 1
             self.window['press_start'].metadata = 1
+            self.window['instructions'].Update(disabled=True)
             self.window['settings'].Update(disabled=True)
         else:
             self.window['toggle'].metadata = 0
             self.window['press_start'].metadata = 0
+            self.window['instructions'].Update(disabled=False)
             self.window['settings'].Update(disabled=False)
+
+    @staticmethod
+    def display_instructions():
+        contents = global_settings.language.LAYOUT_MAPPING.get('instructions_contents',
+                                                               global_settings.get_language('English').LAYOUT_MAPPING.get('instructions_contents', 'Should be stuff here'))
+        Sg.popup(*contents, font=(global_settings.font, 13),
+                 title=global_settings.language.LAYOUT_MAPPING.get('instructions_window_title', 'Instructions'), icon=global_settings.icon)
 
     def configure(self):
         settings = GUIConfig()
@@ -127,6 +137,8 @@ class GUI:
                 break
             elif event == 'toggle':
                 self.toggle_bot()
+            elif event == 'instructions':
+                self.display_instructions()
             elif event == 'settings':
                 self.configure()
             elif event == 'test':
