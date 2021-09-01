@@ -94,16 +94,14 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.3.17-beta'
+        self.APP_VERSION = '3.3.18-beta'
         self.APP_CHANGELOGS = {
             'English': [f'Updated to {self.APP_VERSION} \\o/',
                         'If it\'s your first time using the bot or seeing this message, please click "Instructions" and read them carefully',
-                        '- Actually added Battle Pass to danger zones',
-                        '- Hopefully future proofed the menu'],
+                        '- Made bot slower but safer and it\'s weird now'],
             'Русский': [f'Обновился до {self.APP_VERSION} \\o/',
                         'Если вы используете бота или видите это сообщение впервые, пожалуйста, нажмите на "Инструкции" и тщательно их прочтите',
-                        '- Добавил боевой пропуск к опасным зонам'
-                        '- Надеюсь что сделал чтобы меню всегда работало верно после обновлений']
+                        '- Сделал бота более медленным но более безопасным и очень странным']
         }
 
         self.compiled = getattr(sys, 'frozen', False)

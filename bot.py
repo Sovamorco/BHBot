@@ -49,6 +49,7 @@ class BrawlhallaBot:
         self._time_started = self.time_started
 
         self.sample = [[] * 8]
+        self.last_states = set()
 
     def find_brawlhalla(self):
         brawlhalla = BrawlhallaProcess.find()
@@ -74,7 +75,7 @@ class BrawlhallaBot:
         self.level_definer = LevelDefiner(self.brawlhalla)
 
         logger.info('found_bh')
-        self.check_stuff()
+        self.get_states()
         self.virtual_input.esc()  # idk why but it puts bh into windowed
         sleep(1)
         if self.brawlhalla.fullscreen:
@@ -138,8 +139,6 @@ class BrawlhallaBot:
             self.brawlhalla.kill()
             sleep(1)
             raise NotRespondingError
-        if self.brawlhalla.get_client_size() != (1920, 1080):
-            raise ResizedError
 
     @property
     def state_conditions(self):
@@ -193,8 +192,6 @@ class BrawlhallaBot:
 
     def menu_element_selected(self):
         current_column = self.get_menu_column()
-        print(self.sample)
-        print(current_column)
         selected = list(filter(lambda x: compare(self.sample[x], current_column[x]) > 5, range(8)))
         if len(selected) > 1:
             raise InvalidStateError
@@ -203,7 +200,7 @@ class BrawlhallaBot:
         return selected[0] + 1
 
     def execute_steps(self, *steps, delay=.1):
-        self.check_stuff()
+        self.get_states()
         for step in steps:
             if isinstance(step, (int, float)):
                 sleep(step)
@@ -214,7 +211,7 @@ class BrawlhallaBot:
                     logger.info(step)
             else:
                 step()
-            self.check_stuff()
+            self.get_states()
             sleep(delay)
 
     def main_sequence(self):
@@ -228,6 +225,7 @@ class BrawlhallaBot:
                 logger.info('started_fighting')
                 last, ig = True, True  # To avoid failing ingame detection on low connection bc of "Double kill" popup covering first connection column for 1 frame
                 while last or ig:
+                    self.get_states()
                     last, ig = ig, self.has_state('ingame', 'low_connection')
                     self.virtual_input.fight()
 
@@ -261,19 +259,22 @@ class BrawlhallaBot:
         self.check_stuff()
         states = set()
         screenshot = self.brawlhalla.make_screenshot()
+        if screenshot.size != (1920, 1080):
+            raise ResizedError
         for state in self.state_conditions:
             if self.is_color(screenshot, *self.state_conditions[state]):
                 states.add(state)
         logger.debug(states)
         if self.danger_zone & states and not self.safe_states & states:
             raise DangerZoneError
-        return states
+        self.last_states = states
 
     def has_state(self, *states):
-        return self.get_states() & set(states)
+        return self.last_states & set(states)
 
     def go_to_menu(self, initial=False):
         iters = 0
+        self.get_states()
         while not self.has_state('menu'):
             iters += 1
             logger.debug('not_in_menu')
@@ -293,11 +294,12 @@ class BrawlhallaBot:
                 self.go_to_menu()
             if iters > 100:
                 raise NotRespondingError
+            self.get_states()
 
     def select_menu_item(self, item, *steps):
         while (selected_item := self.menu_element_selected()) != item:
             logger.debug('item_not_selected', item)
-            logger.debug('selected_item %s', selected_item)
+            logger.debug('selected_item %s', selected_item)  # TODO: remove this in release
             self.execute_steps(*steps, delay=.05)
             if self.has_state('game_in_progress'):
                 self.virtual_input.dodge()
@@ -333,6 +335,7 @@ class BrawlhallaBot:
             logger.debug('sorting_by_date')
             self.virtual_input.enter()
             sleep(.5)
+            self.get_states()
 
     def get_characters(self):
         _characters = []
@@ -364,6 +367,7 @@ class BrawlhallaBot:
             sleep(2)
             if iters > 100:
                 raise NotRespondingError
+            self.get_states()
 
     def validate_level(self):
         self.go_to_rewards_screen()
@@ -383,11 +387,13 @@ class BrawlhallaBot:
         while not self.has_state('on_rewards_screen'):
             self.virtual_input.quick()
             sleep(5)
+            self.get_states()
 
     def open_settings(self):
         while not self.has_state('settings_open'):
             self.virtual_input.heavy()
             sleep(2)
+            self.get_states()
 
     def wait_for_loading(self):
         iters = 0
@@ -398,6 +404,7 @@ class BrawlhallaBot:
             sleep(2)
             if iters > self.duration * 60:
                 raise NotRespondingError
+            self.get_states()
 
     def wait_for_loaded(self):
         iters = 0
@@ -407,6 +414,7 @@ class BrawlhallaBot:
             sleep(1)
             if iters > 100:
                 raise NotRespondingError
+            self.get_states()
 
     def pick_character(self):
         logger.info('pick_char', self.mode.next_character)
@@ -454,6 +462,7 @@ class BrawlhallaBot:
         self.execute_steps('starting_game', self.wait_for_loading, self.wait_for_loaded, 'loaded', 5)
 
     def after_fight(self):
+        self.get_states()
         if self.has_state('disconnected', 'game_in_progress', 'offline'):
             logger.info('disconnected')
             raise NotRespondingError
