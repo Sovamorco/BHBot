@@ -174,4 +174,6 @@ MESSAGES = {
               'Stealth: {0.stealth}\n'
               'Mute: {0.mute}\n'
               '------------------------\n',
+    'resized_warning': 'Game window was resized. Please read the instructions. Bot will now restart',
+    'danger_zone_warning': 'Bot is in danger zone (Mallhalla or Battle Pass). Restarting.',
 }

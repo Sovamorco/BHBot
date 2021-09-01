@@ -78,7 +78,7 @@ class BrawlhallaProcess:
         w_border = window_size[0] - client_size[0]
         h_border = window_size[1] - client_size[1]
         while self.get_client_size() != (1920, 1080):  # getwindowsize or getclientsize or setwindowpos or something else is weird so it sometimes doesnt work first try
-            win32gui.SetWindowPos(self.window, 0, 0, 0, 1920 + w_border, 1080 + h_border, win32con.SWP_NOMOVE | win32con.SWP_NOZORDER)
+            win32gui.SetWindowPos(self.window, 0, 0, 0, 1920 + w_border, 1080 + h_border, win32con.SWP_NOZORDER)
 
     def move_off_screen(self):
         logger.debug('move_offscreen')

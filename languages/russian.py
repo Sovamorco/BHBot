@@ -149,6 +149,31 @@ MESSAGES = {
     'rotation_error': 'Ошибка при получении ротации персонажей:\n%s',
     'muting': 'Выключаю звук',
     'reconnected': 'Переподключился',
-    'settings': 'Текущие настройки: %s',
-    'config': 'Текущий конфиг: %s',
+    'settings': 'Настройки:\n'
+                '------------------------\n'
+                'App Name: {0.APP_NAME}\n'
+                'App Version: {0.APP_VERSION}\n'
+                'Compiled: {0.compiled}\n'
+                'Branch: {0.branch}\n'
+                'New version: {0.new_version}\n'
+                'Language: {0.language_name}\n'
+                'Font: {0.font}\n'
+                'Autostart: {0.autostart}\n'
+                'Debug: {0.debug}\n'
+                '------------------------\n',
+    'config': 'Конфиг:\n'
+              '------------------------\n'
+              'Mode: {0.mode_name}\n'
+              'Character: {0.character}\n'
+              'Duration: {0.duration}\n'
+              'Auto-stop: {0.auto_stop}\n'
+              'Auto detect auto-stop: {0.auto_detect_auto_stop}\n'
+              'Auto-stop frequency: {0.auto_stop_frequency}\n'
+              'Auto-stop duration: {0.auto_stop_duration}\n'
+              'Bots: {0.bots}\n'
+              'Stealth: {0.stealth}\n'
+              'Mute: {0.mute}\n'
+              '------------------------\n',
+    'resized_warning': 'Размер окна игры был изменен. Пожалуйста, прочитайте инструкции. Бот сейчас перезапустится',
+    'danger_zone_warning': 'Бот в опасном состоянии (в внутриигровом магазине или боевом пропуске). Перезапускаюсь.',
 }

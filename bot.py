@@ -11,6 +11,14 @@ class QueuedRecalculation(Exception):
     pass
 
 
+class ResizedError(Exception):
+    pass
+
+
+class DangerZoneError(Exception):
+    pass
+
+
 class BrawlhallaBot:
     def __init__(self, config, hotkeys, bot_queue):
         self.config = config
@@ -120,6 +128,8 @@ class BrawlhallaBot:
             self.brawlhalla.kill()
             sleep(1)
             raise NotRespondingError
+        if self.brawlhalla.get_client_size() != (1920, 1080):
+            raise ResizedError
 
     @property
     def state_conditions(self):
@@ -148,12 +158,21 @@ class BrawlhallaBot:
             'on_rewards_screen': (1035, 121, (255, 255, 255)),
             'level_up': (1363, 320, (19, 133, 51)),
             'popup': (940, 790, (247, 248, 249)),
+            'in_mallhalla': (578, 135, (255, 255, 255)),
         }
 
     @property
     def duration_setting(self):
         return [self.open_settings, 1] + [self.virtual_input.down] * 3 + (self.mode.next_duration - self.duration) * [self.virtual_input.right] + (
-                    self.duration - self.mode.next_duration) * [self.virtual_input.left] + [self.virtual_input.quick]
+                self.duration - self.mode.next_duration) * [self.virtual_input.left] + [self.virtual_input.quick]
+
+    @property
+    def danger_zone(self):
+        return {'in_mallhalla'}
+
+    @property
+    def safe_states(self):
+        return {'ingame', 'low_connection'}
 
     @staticmethod
     def is_color(screenshot, x, y, *colors):
@@ -171,6 +190,7 @@ class BrawlhallaBot:
                     logger.info(step)
             else:
                 step()
+            self.check_stuff()
             sleep(delay)
 
     def main_sequence(self):
@@ -196,6 +216,12 @@ class BrawlhallaBot:
         except QueuedRecalculation:
             sleep(5)
             logger.info('queued_recalc')
+        except ResizedError:
+            logger.warning('resized_warning')
+            sleep(5)
+        except DangerZoneError:
+            logger.warning('danger_zone_warning')
+            sleep(5)
 
     def main_loop(self):
         while True:
@@ -212,6 +238,8 @@ class BrawlhallaBot:
             if self.is_color(screenshot, *self.state_conditions[state]):
                 states.add(state)
         logger.debug(states)
+        if self.danger_zone & states and not self.safe_states & states:
+            raise DangerZoneError
         return states
 
     def has_state(self, *states):
