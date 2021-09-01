@@ -58,7 +58,8 @@ LAYOUT_MAPPING = {
                               'If you notice that you accidentally moved something, restart the bot (but better use stealth mode, really)',
                               '2. Make sure your ingame language is set to English',
                               '3. Make sure "Collapse crossovers" setting is enabled',
-                              '4. Configure everything else as you prefer and click "Start"',
+                              '4. Put game into windowed if bot doesn\'t do so automatically',
+                              '5. Configure everything else as you prefer and click "Start"',
                               'Enjoy c:'],
     # Popups
     'changelog_popup_title': 'Changelog',
@@ -175,5 +176,6 @@ MESSAGES = {
               'Mute: {0.mute}\n'
               '------------------------\n',
     'resized_warning': 'Game window was resized. Please read the instructions. Bot will now restart',
-    'danger_zone_warning': 'Bot is in danger zone (Mallhalla or Battle Pass). Restarting.',
+    'danger_zone_warning': 'Bot is in danger zone (Mallhalla or Battle Pass). Restarting',
+    'invalid_state_warning': 'Bot is in invalid state. Something went wrong. Restarting',
 }

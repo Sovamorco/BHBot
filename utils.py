@@ -94,22 +94,16 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.3.16-beta'
+        self.APP_VERSION = '3.3.17-beta'
         self.APP_CHANGELOGS = {
             'English': [f'Updated to {self.APP_VERSION} \\o/',
                         'If it\'s your first time using the bot or seeing this message, please click "Instructions" and read them carefully',
-                        '- Added instructions',
-                        '- Fixed issues with new menu',
-                        '- Made bot move window to (0, 0) during initialization',
-                        '- Added a warning and restart condition if the game window was resized while the bot is running',
-                        '- Added danger zone (Mallhalla and Battle Pass)'],
+                        '- Actually added Battle Pass to danger zones',
+                        '- Hopefully future proofed the menu'],
             'Русский': [f'Обновился до {self.APP_VERSION} \\o/',
                         'Если вы используете бота или видите это сообщение впервые, пожалуйста, нажмите на "Инструкции" и тщательно их прочтите',
-                        '- Добавил инструкции',
-                        '- Починил проблемы с новым меню',
-                        '- Сделал чтобы бот перемещал окно на (0, 0) при инициализации',
-                        '- Добавил предупреждение и перезапуск в случае изменения размера окна игры во время работы бота',
-                        '- Добавил небезопасную зону (внутриигровой магазин и боевой пропуск)']
+                        '- Добавил боевой пропуск к опасным зонам'
+                        '- Надеюсь что сделал чтобы меню всегда работало верно после обновлений']
         }
 
         self.compiled = getattr(sys, 'frozen', False)
@@ -337,3 +331,18 @@ def get_rotation():
     except Exception as e:
         logger.warning('rotation_error', e)
         return []
+
+
+def chunks(input_list, n):
+    """
+    Yield n number of sequential chunks from input_list.
+    https://stackoverflow.com/a/54802737
+    """
+    d, r = divmod(len(input_list), n)
+    for i in range(n):
+        si = (d + 1) * (i if i < r else r) + d * (0 if i < r else i - r)
+        yield input_list[si:si + (d + 1 if i < r else d)]
+
+
+def compare(fst, snd):
+    return sum(fst[i] != snd[i] for i in range(min(len(fst), len(snd))))
