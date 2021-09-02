@@ -94,14 +94,14 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.3.18-beta'
+        self.APP_VERSION = '3.3.19-beta'
         self.APP_CHANGELOGS = {
             'English': [f'Updated to {self.APP_VERSION} \\o/',
                         'If it\'s your first time using the bot or seeing this message, please click "Instructions" and read them carefully',
-                        '- Made bot slower but safer and it\'s weird now'],
+                        '- Increased required difference for xp discrepancy to be detected for characters of levels 40+'],
             'Русский': [f'Обновился до {self.APP_VERSION} \\o/',
                         'Если вы используете бота или видите это сообщение впервые, пожалуйста, нажмите на "Инструкции" и тщательно их прочтите',
-                        '- Сделал бота более медленным но более безопасным и очень странным']
+                        '- Увеличил необходимую разницу для обнаружения достижения лимита опыта для персонажей выше 40 уровня']
         }
 
         self.compiled = getattr(sys, 'frozen', False)

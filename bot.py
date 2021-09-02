@@ -188,6 +188,7 @@ class BrawlhallaBot:
 
     def get_menu_sample(self):
         self.execute_steps(*[self.virtual_input.right] * 5)
+        sleep(1)
         self.sample = self.get_menu_column()
 
     def menu_element_selected(self):
@@ -378,7 +379,7 @@ class BrawlhallaBot:
         calculated_xp = get_duration_xp(self.duration)
         logger.debug('calc_xp', calculated_xp)
         logger.debug('pixel_xp', xp)
-        if not abs(xp - calculated_xp) <= calculated_xp / 3:
+        if (self.character.level < 40 and abs(xp - calculated_xp) > calculated_xp / 3) or abs(xp - calculated_xp) > calculated_xp / 1.5:
             logger.info('xp_discrep')
             return False
         return True
