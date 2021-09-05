@@ -94,7 +94,7 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.3.14'
+        self.APP_VERSION = '3.3.16'
         self.APP_CHANGELOGS = {
             'English': f'Updated to {self.APP_VERSION} \\o/\n\nFixed issues with new menu',
             'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nПочинил проблемы с новым меню',
