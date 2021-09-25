@@ -94,10 +94,14 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.3.16'
+        self.APP_VERSION = '3.3.19-beta'
         self.APP_CHANGELOGS = {
-            'English': f'Updated to {self.APP_VERSION} \\o/\n\nFixed issues with new menu',
-            'Русский': f'Обновился до {self.APP_VERSION} \\o/\n\nПочинил проблемы с новым меню',
+            'English': [f'Updated to {self.APP_VERSION} \\o/',
+                        'If it\'s your first time using the bot or seeing this message, please click "Instructions" and read them carefully',
+                        '- Increased required difference for xp discrepancy to be detected for characters of levels 40+'],
+            'Русский': [f'Обновился до {self.APP_VERSION} \\o/',
+                        'Если вы используете бота или видите это сообщение впервые, пожалуйста, нажмите на "Инструкции" и тщательно их прочтите',
+                        '- Увеличил необходимую разницу для обнаружения достижения лимита опыта для персонажей выше 40 уровня']
         }
 
         self.compiled = getattr(sys, 'frozen', False)
@@ -325,3 +329,18 @@ def get_rotation():
     except Exception as e:
         logger.warning('rotation_error', e)
         return []
+
+
+def chunks(input_list, n):
+    """
+    Yield n number of sequential chunks from input_list.
+    https://stackoverflow.com/a/54802737
+    """
+    d, r = divmod(len(input_list), n)
+    for i in range(n):
+        si = (d + 1) * (i if i < r else r) + d * (0 if i < r else i - r)
+        yield input_list[si:si + (d + 1 if i < r else d)]
+
+
+def compare(fst, snd):
+    return sum(fst[i] != snd[i] for i in range(min(len(fst), len(snd))))
