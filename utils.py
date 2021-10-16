@@ -94,24 +94,22 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.3.20'
+        self.APP_VERSION = '3.3.21'
         self.APP_CHANGELOGS = {
-            'English': [f'Updated to {self.APP_VERSION} \\o/',
-                        'If it\'s your first time using the bot or seeing this message, please click "Instructions" and read them carefully',
-                        '- Added danger zone (Mallhalla and Battle Pass)',
-                        '- Added Instructions',
-                        '- Added a warning and restart condition if the game window was resized while the bot is running',
-                        '- Made bot move window to (0, 0) during initialization',
-                        '- Hopefully future-proofed the menu',
-                        '- Increased required difference for xp discrepancy to be detected for characters of levels 40+'],
-            'Русский': [f'Обновился до {self.APP_VERSION} \\o/',
-                        'Если вы используете бота или видите это сообщение впервые, пожалуйста, нажмите на "Инструкции" и тщательно их прочтите',
-                        '- Добавил небезопасную зону (внутриигровой магазин и боевой пропуск)',
-                        '- Добавил инструкции',
-                        '- Добавил предупреждение и перезапуск в случае изменения размера окна игры во время работы бота',
-                        '- Сделал чтобы бот перемещал окно на (0, 0) при инициализации  ',
-                        '- Надеюсь что сделал чтобы меню всегда работало верно после обновлений',
-                        '- Увеличил необходимую разницу для обнаружения достижения лимита опыта для персонажей выше 40 уровня']
+            'English': [
+                f'Updated to {self.APP_VERSION} \\o/',
+                'If it\'s your first time using the bot or seeing this message, please click "Instructions" and read them carefully',
+                '- DO NOT USE BHBOT ON BETA OR AFTER ADDITION OF EASY ANTI-CHEAT TO THE MAIN CLIENT UNTIL RELATED UPDATES. It can probably get you banned',
+                '- Added Munin',
+                '- Fixed Reno not showing up in the character selection list',
+            ],
+            'Русский': [
+                f'Обновился до {self.APP_VERSION} \\o/',
+                'Если вы используете бота или видите это сообщение впервые, пожалуйста, нажмите на "Инструкции" и тщательно их прочтите',
+                '- НЕ ИСПОЛЬЗУЙТЕ BHBOT НА БЕТЕ ИЛИ ПОСЛЕ ДОБАВЛЕНИЯ EASY ANTI-CHEAT В ОСНОВНОЙ КЛИЕНТ ДО СВЯЗАННЫХ С ЭТИМ ОБНОВЛЕНИЙ. Скорее всего за это вас могут забанить',
+                '- Добавил нового героя',
+                '- Починил то что Reno не показыватся в списке героев',
+            ]
         }
 
         self.compiled = getattr(sys, 'frozen', False)
