@@ -1,5 +1,4 @@
 import queue
-import webbrowser
 from time import time
 
 from config import *
@@ -63,12 +62,18 @@ class BrawlhallaBot:
             self.brawlhalla.kill()
             sleep(5)
 
+        try:
+            steam = SteamClient()
+        except SteamExeNotFound:
+            logger.error('no_steam_exe')
+            return self.on_exit()
         count = 10000
         while not self.find_brawlhalla():
             logger.debug('waiting_for_bh_window')
+            self.check_stuff()
             count += 1
             if count >= 10000:
-                webbrowser.open('steam://launch/291550')
+                steam.run_brawlhalla()
                 count = 0
 
         self.virtual_input = VirtualInput(self.brawlhalla, self.hotkeys)
@@ -135,7 +140,7 @@ class BrawlhallaBot:
                 raise KeyboardInterrupt
         except queue.Empty:
             pass
-        if not self.brawlhalla.responding:
+        if self.brawlhalla and not self.brawlhalla.responding:
             self.brawlhalla.kill()
             sleep(1)
             raise NotRespondingError
@@ -298,9 +303,8 @@ class BrawlhallaBot:
             self.get_states()
 
     def select_menu_item(self, item, *steps):
-        while (selected_item := self.menu_element_selected()) != item:
+        while self.menu_element_selected() != item:
             logger.debug('item_not_selected', item)
-            logger.debug('selected_item %s', selected_item)  # TODO: remove this in release
             self.execute_steps(*steps, delay=.05)
             if self.has_state('game_in_progress'):
                 self.virtual_input.dodge()
@@ -345,6 +349,7 @@ class BrawlhallaBot:
         logger.info('collecting_character_data')
         for line in level_character_matrix:
             for character in line:
+                self.get_states()
                 level = self.level_definer.get_level()
                 xp = self.level_definer.get_xp(level)
                 unlocked = character in rotation or self.level_definer.get_unlocked()

@@ -94,21 +94,23 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.3.21'
+        self.APP_VERSION = '3.4.0'
         self.APP_CHANGELOGS = {
             'English': [
                 f'Updated to {self.APP_VERSION} \\o/',
                 'If it\'s your first time using the bot or seeing this message, please click "Instructions" and read them carefully',
-                '- DO NOT USE BHBOT ON BETA OR AFTER ADDITION OF EASY ANTI-CHEAT TO THE MAIN CLIENT UNTIL RELATED UPDATES. It can probably get you banned',
                 '- Added Munin',
                 '- Fixed Reno not showing up in the character selection list',
+                '- Added support for new beta (bot disables Easy Anti-Cheat when running the game)',
+                '!!! There may still be bugs when running the bot on beta as the bot on it is not tested',
             ],
             'Русский': [
                 f'Обновился до {self.APP_VERSION} \\o/',
                 'Если вы используете бота или видите это сообщение впервые, пожалуйста, нажмите на "Инструкции" и тщательно их прочтите',
-                '- НЕ ИСПОЛЬЗУЙТЕ BHBOT НА БЕТЕ ИЛИ ПОСЛЕ ДОБАВЛЕНИЯ EASY ANTI-CHEAT В ОСНОВНОЙ КЛИЕНТ ДО СВЯЗАННЫХ С ЭТИМ ОБНОВЛЕНИЙ. Скорее всего за это вас могут забанить',
                 '- Добавил нового героя',
                 '- Починил то что Reno не показыватся в списке героев',
+                '- Добавил поддержку новой беты (бот выключает Easy Anti-Cheat когда запускает игру)',
+                '!!! При запуске бота с бета-версией игры все еще могут быть баги, поскольку бот на ней не проверялся',
             ]
         }
 

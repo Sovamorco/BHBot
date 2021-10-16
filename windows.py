@@ -1,9 +1,11 @@
 import ctypes
 import subprocess
+import winreg
 from time import sleep
 
 import psutil
 import pywintypes
+import regex as re
 import win32api
 import win32con
 import win32gui
@@ -20,6 +22,10 @@ class NotRespondingError(Exception):
     pass
 
 
+class SteamExeNotFound(Exception):
+    pass
+
+
 def get_window(title):
     def window_enumeration_handler(hwnd, response):
         if win32gui.IsWindowVisible(hwnd) and win32gui.IsWindowEnabled(hwnd):
@@ -33,6 +39,52 @@ def get_window(title):
     return res[0] if res else None
 
 
+class SteamClient:
+    _WIN_REG_SHELL = (winreg.HKEY_CLASSES_ROOT, r"steam\Shell\Open\Command")
+    _PROCESS_NAME = 'steam.exe'
+
+    def __init__(self):
+        self.path = self.find_exe()
+        self.cmd = f'"{self.path}" -applaunch 291550 -noeac'
+
+    # yoinked from battlenet extension for gog galaxy
+    @staticmethod
+    def __search_registry_for_run_cmd(*args):
+        try:
+            key = winreg.OpenKey(*args)
+            for i in range(1024):
+                try:
+                    _, exe_cmd, _type = winreg.EnumValue(key, i)
+                    if exe_cmd and _type == winreg.REG_SZ:
+                        return exe_cmd
+                except OSError:
+                    break
+        except FileNotFoundError:
+            return None
+
+    def _find_exe_running(self):
+        for proc in psutil.process_iter():
+            if proc.name() == self._PROCESS_NAME:
+                return proc.exe()
+
+    # yoinked from battlenet extension for gog galaxy
+    def _find_exe_registry(self):
+        shell_reg_value = self.__search_registry_for_run_cmd(*self._WIN_REG_SHELL)
+        if shell_reg_value is None:
+            return None
+        reg = re.compile("\"(.*?)\"")
+        return reg.search(shell_reg_value).groups()[0]
+
+    def find_exe(self):
+        res = self._find_exe_running() or self._find_exe_registry()
+        if not res:
+            raise SteamExeNotFound()
+        return res
+
+    def run_brawlhalla(self):
+        subprocess.Popen(self.cmd, creationflags=subprocess.DETACHED_PROCESS)
+
+
 class BrawlhallaProcess:
     def __init__(self, hwnd, proc):
         self.window = hwnd
@@ -40,7 +92,7 @@ class BrawlhallaProcess:
 
     @classmethod
     def find(cls):
-        res = get_window('Brawlhalla.exe')
+        res = get_window('Brawlhalla.exe') or get_window('BrawlhallaGame.exe')  # support for beta
         if not res:
             return None
         return cls(*res)
