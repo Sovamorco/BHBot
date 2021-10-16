@@ -117,7 +117,7 @@ class BrawlhallaBot:
     def on_exit(self):
         if self.virtual_input:
             self.virtual_input.release_keys()
-        if self.config.stealth:
+        if self.config.stealth and self.brawlhalla:
             self.brawlhalla.kill()
         text = global_settings.messages.get('initial_on_exit', 'initial_on_exit') % (format_time(time() - self.time_started), self.games_completed, self.crashes, self.total_xp)
         if self.mode.parse_character_levels:
