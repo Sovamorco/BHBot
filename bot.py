@@ -70,7 +70,7 @@ class BrawlhallaBot:
         count = 10000
         while not self.find_brawlhalla():
             logger.debug('waiting_for_bh_window')
-            self.check_stuff()
+            self.check_queue()
             count += 1
             if count >= 10000:
                 steam.run_brawlhalla()
@@ -133,13 +133,16 @@ class BrawlhallaBot:
             self.queue.queue.clear()
         sys.exit()
 
-    def check_stuff(self):
+    def check_queue(self):
         try:
             message = self.queue.get_nowait()
             if message == 'STOP':
                 raise KeyboardInterrupt
         except queue.Empty:
             pass
+
+    def check_stuff(self):
+        self.check_queue()
         if self.brawlhalla and not self.brawlhalla.responding:
             self.brawlhalla.kill()
             sleep(1)
