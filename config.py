@@ -25,6 +25,7 @@ class Config:
         self.bots = config.get('bots', 2)
         self.mute = config.get('mute', False)
         self.stealth = config.get('stealth', False)
+        self.legacy_menu_detection = config.get('legacy_menu_detection', False)
         self.modes = self.get_modes()
         if not self.modes:
             logger.error('no_modes')
@@ -184,10 +185,11 @@ class GUIConfig:
             [self.row('bots', Sg.Combo(list(range(1, 8)), readonly=True, default_value=self.config.bots, font=(global_settings.font, 12)))],
             [self.row('stealth', Sg.Checkbox('', default=self.config.stealth))],
             [self.row('mute', Sg.Checkbox('', default=self.config.mute))],
+            [self.row('legacy_menu_detection', Sg.Checkbox('', default=self.config.legacy_menu_detection))],
             [Sg.Button('', font=(global_settings.font, 12), key='hotkey_settings')],
             [Sg.Button('', font=(global_settings.font, 12), key='save'), Sg.Button('', font=(global_settings.font, 12), key='back')]
         ]
-        window = Sg.Window('', layout, size=(800, 750), keep_on_top=True, icon=global_settings.icon, metadata='settings_window_title').Finalize()
+        window = Sg.Window('', layout, size=(800, 800), keep_on_top=True, icon=global_settings.icon, metadata='settings_window_title').Finalize()
         global_settings.update_window(window)
         return window
 

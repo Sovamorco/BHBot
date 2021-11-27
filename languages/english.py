@@ -34,6 +34,7 @@ LAYOUT_MAPPING = {
     'bots_text': 'Bots amount: ',
     'stealth_text': 'Stealth-mode (hidden game window): ',
     'mute_text': 'Disable sound: ',
+    'legacy_menu_detection_text': 'Legacy menu detection: ',
     'hotkey_settings': 'Hotkey settings',
     'save': 'Save',
     'back': 'Back',
@@ -100,6 +101,8 @@ TOOLTIPS = {
     'stealth_column': 'Will hide the game window after Brawlhalla startsn\n'
                       'Also automatically sets following option to True',
     'mute_column': 'If bot should disable sounds/music ingame after getting into menu',
+    'legacy_menu_detection_column': 'Switch to legacy menu detection\n'
+                                    'Check only if the bot is stuck in menu or falls into invalid state',
 }
 
 MESSAGES = {
@@ -180,6 +183,7 @@ MESSAGES = {
               'Bots: {0.bots}\n'
               'Stealth: {0.stealth}\n'
               'Mute: {0.mute}\n'
+              'Legacy menu detection: {0.legacy_menu_detection}\n'
               '------------------------\n',
     'resized_warning': 'Game window was resized. Please read the instructions. Bot will now restart',
     'danger_zone_warning': 'Bot is in danger zone (Mallhalla or Battle Pass). Restarting',
@@ -187,4 +191,5 @@ MESSAGES = {
     'no_steam_exe': 'Steam client exe cannot be found. Please launch Steam and try to run bot again',
     'delayed_stop': 'Bot will stop after finishing current game or before beginning a new one',
     'cancel_stop': 'All queued stops were cancelled',
+    'menu_pixels_error': 'Error getting pixels for state detection. Don\'t worry, this just means that the default ones will be used:\n%s',
 }

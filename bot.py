@@ -50,6 +50,8 @@ class BrawlhallaBot:
         self.sample = [[] * 8]
         self.last_states = set()
 
+        self.state_detection_pixels = get_menu_pixels()
+
     def find_brawlhalla(self):
         brawlhalla = BrawlhallaProcess.find()
         if brawlhalla:
@@ -98,7 +100,8 @@ class BrawlhallaBot:
 
         self.go_to_menu(True)
         sleep(2)
-        self.get_menu_sample()
+        if not self.config.legacy_menu_detection:
+            self.get_menu_sample()
 
         if self.config.mute:
             self.mute()
@@ -159,27 +162,104 @@ class BrawlhallaBot:
     def state_conditions(self):
         conn_x = 1772 - ceil(98.5 * (self.config.bots // 2))
         low_conn_x = conn_x - 27
-        return {
-            'ingame': (conn_x, 46, (0, 204, 51)),
-            'low_connection': (low_conn_x, 64, (255, 255, 51), (255, 153, 0), (255, 0, 0)),
-            'menu': (1890, 70, (255, 255, 255)),
-            'loading': (899, 85, (227, 248, 255)),
-            'bonus': (930, 320, (109, 198, 211)),
-            # 'bonus': (936, 555, (255, 255, 255)),
-            'offline': (1674, 26, (55, 66, 100), (57, 67, 101)),
-            'sorted_by_date': (410, 768, (254, 254, 255)),
-            'lobby': (1325, 22, (255, 255, 255)),
-            'game_in_progress': (960, 395, (111, 200, 211)),
-            'settings_open': (1221, 106, (220, 220, 222)),
-            'disconnected': (934, 623, (247, 248, 249)),
-            'settings_selected': (1890, 71, (166, 166, 183)),
-            'system_settings_selected': (1607, 195, (39, 85, 136)),
-            'on_rewards_screen': (1035, 121, (255, 255, 255)),
-            'level_up': (1363, 320, (19, 133, 51)),
-            'popup': (940, 790, (247, 248, 249)),
-            'in_mallhalla': (578, 135, (255, 255, 255)),
-            'in_battle_pass': (160, 40, (255, 255, 255)),
+
+        _legacy_menu = {
+            'pixels': ((40, 551), (34, 551)),
+            'colors': ((247, 248, 249), (246, 247, 249), (246, 247, 248), (248, 249, 249), (247, 247, 248)),
         }
+        _new_menu = {
+            'pixels': ((1890, 70),),
+            'colors': ((255, 255, 255),)
+        }
+
+        legacy_menu = self.state_detection_pixels.get('legacy_menu') or _legacy_menu
+        new_menu = self.state_detection_pixels.get('menu') or _new_menu
+
+        res = {
+            'ingame': {
+                'pixels': ((conn_x, 46),),
+                'colors': ((0, 204, 51),),
+            },
+            'low_connection': {
+                'pixels': ((low_conn_x, 64),),
+                'colors': ((255, 255, 51), (255, 153, 0), (255, 0, 0)),
+            },
+            'legacy_cgr_selected': {
+                'pixels': ((40, 532),),
+                'colors': ((247, 248, 249), (246, 247, 249), (246, 247, 248), (248, 249, 249)),
+            },
+            'legacy_mtl_selected': {
+                'pixels': ((40, 792),),
+                'colors': ((247, 248, 249), (246, 247, 249), (246, 247, 248), (248, 249, 249)),
+            },
+            'menu': legacy_menu if self.config.legacy_menu_detection else new_menu,
+            'loading': {
+                'pixels': ((899, 85),),
+                'colors': ((227, 248, 255),),
+            },
+            'bonus': {
+                'pixels': ((930, 320),),
+                'colors': ((109, 198, 211),),
+            },
+            'offline': {
+                'pixels': ((1674, 26),),
+                'colors': ((55, 66, 100), (57, 67, 101)),
+            },
+            'sorted_by_date': {
+                'pixels': ((410, 768),),
+                'colors': ((254, 254, 255),),
+            },
+            'lobby': {
+                'pixels': ((1325, 22),),
+                'colors': ((255, 255, 255),),
+            },
+            'game_in_progress': {
+                'pixels': ((960, 395),),
+                'colors': ((111, 200, 211),),
+            },
+            'settings_open': {
+                'pixels': ((1221, 106),),
+                'colors': ((220, 220, 222),),
+            },
+            'disconnected': {
+                'pixels': ((934, 623),),
+                'colors': ((247, 248, 249),),
+            },
+            'settings_selected': {
+                'pixels': ((1890, 71),),
+                'colors': ((166, 166, 183),),
+            },
+            'system_settings_selected': {
+                'pixels': ((1607, 195),),
+                'colors': ((39, 85, 136),),
+            },
+            'on_rewards_screen': {
+                'pixels': ((1035, 121),),
+                'colors': ((255, 255, 255),),
+            },
+            'level_up': {
+                'pixels': ((1363, 320),),
+                'colors': ((19, 133, 51),),
+            },
+            'popup': {
+                'pixels': ((940, 790),),
+                'colors': ((247, 248, 249),),
+            },
+            'in_mallhalla': {
+                'pixels': ((578, 135),),
+                'colors': ((255, 255, 255),),
+            },
+            'in_battle_pass': {
+                'pixels': ((160, 40),),
+                'colors': ((255, 255, 255),),
+            },
+        }
+
+        for key in res.keys():
+            if key != 'menu' and key in self.state_detection_pixels:
+                res[key] = self.state_detection_pixels[key]
+
+        return res
 
     @property
     def duration_setting(self):
@@ -195,8 +275,8 @@ class BrawlhallaBot:
         return {'ingame', 'low_connection'}
 
     @staticmethod
-    def is_color(screenshot, x, y, *colors):
-        return screenshot.getpixel((x, y)) in colors
+    def is_color(screenshot, pixels, colors):
+        return any(screenshot.getpixel(pixel) in colors for pixel in pixels)
 
     def get_menu_column(self):
         return list(chunks(list(self.brawlhalla.make_screenshot().crop((65, 248, 66, 945)).getdata()), 8))
@@ -278,7 +358,7 @@ class BrawlhallaBot:
         if screenshot.size != (1920, 1080):
             raise ResizedError
         for state in self.state_conditions:
-            if self.is_color(screenshot, *self.state_conditions[state]):
+            if self.is_color(screenshot, **self.state_conditions[state]):
                 states.add(state)
         logger.debug(states)
         if self.danger_zone & states and not self.safe_states & states:
@@ -327,9 +407,13 @@ class BrawlhallaBot:
                 self.virtual_input.dodge()
 
     def select_cgr(self):
+        if self.config.legacy_menu_detection:
+            return self.select_item('legacy_cgr', self.virtual_input.left, self.virtual_input.down)
         self.select_menu_item(4, self.virtual_input.left, self.virtual_input.down)
 
     def select_mtl(self):
+        if self.config.legacy_menu_detection:
+            return self.select_item('legacy_mtl', self.virtual_input.left, self.virtual_input.down)
         self.select_menu_item(7, self.virtual_input.left, self.virtual_input.down)
 
     def select_settings(self):

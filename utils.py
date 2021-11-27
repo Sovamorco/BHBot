@@ -94,17 +94,17 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.4.3-beta'
+        self.APP_VERSION = '3.4.4-beta'
         self.APP_CHANGELOGS = {
             'English': [
                 f'Updated to {self.APP_VERSION} \\o/',
                 'If it\'s your first time using the bot or seeing this message, please click "Instructions" and read them carefully',
-                '- Added "Delayed Stop" button',
+                '- Added legacy menu detection option',
             ],
             'Русский': [
                 f'Обновился до {self.APP_VERSION} \\o/',
                 'Если вы используете бота или видите это сообщение впервые, пожалуйста, нажмите на "Инструкции" и тщательно их прочтите',
-                '- Добавил кнопку "Отложенный Стоп"',
+                '- Добавил настройку "Старое определение меню"',
             ]
         }
 
@@ -333,6 +333,19 @@ def get_rotation():
     except Exception as e:
         logger.warning('rotation_error', e)
         return []
+
+
+def get_menu_pixels():
+    try:
+        res = requests.get('https://sovamor.co/bhbot/menu_pixels').json()
+        return {
+            k: {
+                inner_k: tuple(x if not isinstance(x, list) else tuple(x) for x in inner_v) for inner_k, inner_v in v.items()
+            } for k, v in res.items()
+        }
+    except Exception as e:
+        logger.warning('menu_pixels_error', e)
+        return {}
 
 
 def chunks(input_list, n):
