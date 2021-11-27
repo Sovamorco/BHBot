@@ -49,12 +49,21 @@ class GUI:
                           write_only=True, reroute_cprint=True, reroute_stderr=global_settings.compiled, font=(global_settings.font, 12), text_color='red')]
         ]
 
-        buttons = [Sg.Button('', key='toggle', font=(global_settings.font, 12), metadata=0), Sg.Button('', key='instructions', font=(global_settings.font, 12)),
-                   Sg.Button('', key='settings', font=(global_settings.font, 12)), Sg.Button('', key='exit', font=(global_settings.font, 12))]
+        buttons = [
+            [
+                Sg.Button('', key='toggle', font=(global_settings.font, 12), metadata=0),
+                Sg.Button('', key='instructions', font=(global_settings.font, 12)),
+                Sg.Button('', key='settings', font=(global_settings.font, 12)),
+                Sg.Button('', key='exit', font=(global_settings.font, 12)),
+            ],
+            [
+                Sg.Button('', key='delayed_stop', font=(global_settings.font, 12), metadata=0, visible=False),
+            ],
+        ]
         if not global_settings.compiled:
-            buttons.append(Sg.Button('', key='test', font=(global_settings.font, 12)))
+            buttons[0].append(Sg.Button('', key='test', font=(global_settings.font, 12)))
 
-        layout.append(buttons)
+        layout += buttons
         layout.append([Sg.Text(' ', font='Any 50')])
 
         if global_settings.new_version:
@@ -71,7 +80,6 @@ class GUI:
         global_settings.update_window(window)
         return window
 
-    # noinspection PyPep8Naming
     def toggle_bot(self):
         if self.bot_thread and self.bot_thread.is_alive():
             logger.info('stop_bot')
@@ -85,9 +93,28 @@ class GUI:
             self.bot_thread = threading.Thread(target=bot.main_loop, daemon=True)
             self.bot_thread.start()
 
+    def clear_queue(self):
+        while not self.queue.empty():
+            try:
+                self.queue.get_nowait()
+            except queue.Empty:
+                continue
+            self.queue.task_done()
+
+    def delayed_stop(self):
+        if self.bot_thread and self.bot_thread.is_alive():
+            if self.window['delayed_stop'].metadata:
+                logger.info('cancel_stop')
+                self.clear_queue()
+            else:
+                logger.info('delayed_stop')
+                self.queue.put_nowait('DELAYED_STOP')
+            self.window['delayed_stop'].metadata = not self.window['delayed_stop'].metadata
+
     def refresh_buttons(self):
         if self.downloading_new_version:
             self.window['toggle'].update(disabled=True)
+            self.window['delayed_stop'].update(visible=False)
             self.window['instructions'].update(disabled=True)
             self.window['settings'].update(disabled=True)
             self.window['update_available_button'].update(disabled=True)
@@ -95,13 +122,17 @@ class GUI:
         elif self.bot_thread and self.bot_thread.is_alive():
             self.window['toggle'].metadata = 1
             self.window['press_start'].metadata = 1
+            self.window['delayed_stop'].Update(visible=True)
             self.window['instructions'].Update(disabled=True)
             self.window['settings'].Update(disabled=True)
         else:
             self.window['toggle'].metadata = 0
             self.window['press_start'].metadata = 0
+            self.window['delayed_stop'].metadata = 0
+            self.window['delayed_stop'].Update(visible=False)
             self.window['instructions'].Update(disabled=False)
             self.window['settings'].Update(disabled=False)
+            self.clear_queue()
 
     @staticmethod
     def display_instructions():
@@ -137,6 +168,8 @@ class GUI:
                 break
             elif event == 'toggle':
                 self.toggle_bot()
+            elif event == 'delayed_stop':
+                self.delayed_stop()
             elif event == 'instructions':
                 self.display_instructions()
             elif event == 'settings':

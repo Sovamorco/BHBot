@@ -70,7 +70,7 @@ class BrawlhallaBot:
         count = 10000
         while not self.find_brawlhalla():
             logger.debug('waiting_for_bh_window')
-            self.check_queue()
+            self.process_queue()
             count += 1
             if count >= 10000:
                 steam.run_brawlhalla()
@@ -129,20 +129,27 @@ class BrawlhallaBot:
         stats = global_settings.get_stats()
         total = global_settings.messages.get('total_stats', 'total_stats') % (stats.get('games', 0), stats.get('xp', 0), stats.get('gold', 0), format_time(stats.get('time', 0)))
         box(total, endmargin=False)
-        with self.queue.mutex:
-            self.queue.queue.clear()
         sys.exit()
 
-    def check_queue(self):
-        try:
-            message = self.queue.get_nowait()
-            if message == 'STOP':
+    def process_queue(self, stop_delayed=False):
+        put_back = []
+        while not self.queue.empty():
+            try:
+                msg = self.queue.get_nowait()
+            except queue.Empty:
+                continue
+            self.queue.task_done()
+            if msg == 'STOP':
                 raise KeyboardInterrupt
-        except queue.Empty:
-            pass
+            elif msg == 'DELAYED_STOP':
+                if stop_delayed:
+                    raise KeyboardInterrupt
+                put_back.append(msg)  # cycle it in queue waiting for delayed_stop check
+        for item in put_back:
+            self.queue.put_nowait(item)
 
     def check_stuff(self):
-        self.check_queue()
+        self.process_queue()
         if self.brawlhalla and not self.brawlhalla.responding:
             self.brawlhalla.kill()
             sleep(1)
@@ -468,6 +475,7 @@ class BrawlhallaBot:
         self.execute_steps(2, self.pick_character, 1, self.set_duration, 1)
 
     def go_to_fight(self):
+        self.process_queue(True)
         self.execute_steps('starting_game', self.wait_for_loading, self.wait_for_loaded, 'loaded', 5)
 
     def after_fight(self):
@@ -490,5 +498,6 @@ class BrawlhallaBot:
         logger.info('return_to_lobby')
         self.go_to_lobby()
         sleep(2)
+        self.process_queue(True)
         if time_to_sleep:
             self.reset_xp()

@@ -7,6 +7,7 @@ LAYOUT_MAPPING = {
     'version': 'Version: {0.APP_VERSION}',
     'press_start': ['Press "Start" to start the bot', 'Press "Stop" to stop the bot'],
     'toggle': ['Start', 'Stop'],
+    'delayed_stop': ['Delayed Stop', 'Cancel Stop'],
     'settings': 'Settings',
     'instructions': 'Instructions',
     'exit': 'Exit',
@@ -66,6 +67,11 @@ LAYOUT_MAPPING = {
 }
 
 TOOLTIPS = {
+    # Main window
+    'delayed_stop': [
+        'Stop the bot after finishing current game or before starting new one',
+        'Cancel any queued stops',
+    ],
     # Settings window
     'settings_help': '\n     :)     \n',
     'language_name_column': 'Choose a language (automatically updates)',
@@ -179,4 +185,6 @@ MESSAGES = {
     'danger_zone_warning': 'Bot is in danger zone (Mallhalla or Battle Pass). Restarting',
     'invalid_state_warning': 'Bot is in invalid state. Something went wrong. Restarting',
     'no_steam_exe': 'Steam client exe cannot be found. Please launch Steam and try to run bot again',
+    'delayed_stop': 'Bot will stop after finishing current game or before beginning a new one',
+    'cancel_stop': 'All queued stops were cancelled',
 }
