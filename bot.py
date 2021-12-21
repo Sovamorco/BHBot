@@ -551,7 +551,7 @@ class BrawlhallaBot:
 
     def add_bots(self):
         steps = [self.virtual_input.throw, 1] + \
-                [self.virtual_input.quick, 1, self.virtual_input.quick, 1, self.virtual_input.down] + [self.virtual_input.right] * 3 + \
+                [self.virtual_input.quick, 1, self.virtual_input.quick, 1, self.virtual_input.down, self.virtual_input.left] + \
                 [self.virtual_input.throw]
         self.execute_steps(*steps)
 
