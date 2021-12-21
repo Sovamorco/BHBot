@@ -31,7 +31,6 @@ LAYOUT_MAPPING = {
     'auto_detect_auto_stop_text': 'Автоматическое определение лимита: ',
     'auto_stop_frequency_text': 'Частота сброса в часах: ',
     'auto_stop_duration_text': 'Длительность ожидания для сброса в минутах: ',
-    'bots_text': 'Количество ботов: ',
     'stealth_text': 'Стелс-режим (скрытое окно игры): ',
     'mute_text': 'Выключать звук: ',
     'legacy_menu_detection_text': 'Старое определение меню: ',
@@ -95,9 +94,6 @@ TOOLTIPS = {
                                   'Из опыта, 4.5-5 часов - среднее время достижения лимита',
     'auto_stop_duration_column': 'Как долго боту стоит ждать сброса лимита\n'
                                  'Из опыта, 30 минут - минимальное значение, полностью сбрасывающее лимит',
-    'bots_column': 'Как много ботов (не включая игрока) будет в игре\n'
-                   'Урон и голы не влияют на получаемый опыт/золото, так что оптимальное значение - 2\n'
-                   'Известно, что Brawlhalla работает очень нестабильно с >4 игроками и долгими играми',
     'stealth_column': 'Прячет окно игры после запуска Brawlhall\'ы\n'
                       'Так же автоматически включает следующую настройку',
     'mute_column': 'Стоит ли боту выключать звук/музыку после попадания в меню',
@@ -180,7 +176,6 @@ MESSAGES = {
               'Auto detect auto-stop: {0.auto_detect_auto_stop}\n'
               'Auto-stop frequency: {0.auto_stop_frequency}\n'
               'Auto-stop duration: {0.auto_stop_duration}\n'
-              'Bots: {0.bots}\n'
               'Stealth: {0.stealth}\n'
               'Mute: {0.mute}\n'
               'Legacy menu detection: {0.legacy_menu_detection}\n'

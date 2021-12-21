@@ -160,7 +160,7 @@ class BrawlhallaBot:
 
     @property
     def state_conditions(self):
-        conn_x = 1772 - ceil(98.5 * (self.config.bots // 2))
+        conn_x = 1673
         low_conn_x = conn_x - 27
 
         _legacy_menu = {
@@ -263,7 +263,7 @@ class BrawlhallaBot:
 
     @property
     def duration_setting(self):
-        return [self.open_settings, 1] + [self.virtual_input.down] * 3 + (self.mode.next_duration - self.duration) * [self.virtual_input.right] + (
+        return [self.open_settings, 1] + [self.virtual_input.down] * 2 + (self.mode.next_duration - self.duration) * [self.virtual_input.right] + (
                 self.duration - self.mode.next_duration) * [self.virtual_input.left] + [self.virtual_input.quick]
 
     @property
@@ -543,13 +543,16 @@ class BrawlhallaBot:
 
     def setup_lobby(self):
         # noinspection PyTypeChecker
-        steps = [self.open_settings] + [self.virtual_input.right] * 3 + [self.virtual_input.down] * 3 + [self.virtual_input.left] * (15 - self.duration) + [self.virtual_input.down] * 2 + [
-            self.virtual_input.left] * 5 + [self.virtual_input.down] * 3 + [self.virtual_input.left] * (3 - self.config.bots) + [self.virtual_input.right] * (self.config.bots - 3) + [
-                    self.virtual_input.rbr] + [self.virtual_input.down] * 3 + [self.virtual_input.left, self.virtual_input.down] * 3 + [self.virtual_input.left, self.virtual_input.quick]
+        steps = [self.open_settings] + [self.virtual_input.right] * 6 + [self.virtual_input.down] + [self.virtual_input.left] * 3 + \
+                [self.virtual_input.down] + [self.virtual_input.left] * (15 - self.duration) + \
+                [self.virtual_input.down] * 1 + [self.virtual_input.left] * 6 + [self.virtual_input.rbr] + [self.virtual_input.down] * 3 + \
+                [self.virtual_input.left, self.virtual_input.down] * 3 + [self.virtual_input.left, self.virtual_input.quick]
         self.execute_steps(*steps)
 
     def add_bots(self):
-        steps = [self.virtual_input.throw, 1] + [self.virtual_input.down] * (self.config.bots - 1) + [self.virtual_input.quick] * self.config.bots + [self.virtual_input.throw]
+        steps = [self.virtual_input.throw, 1] + \
+                [self.virtual_input.quick, 1, self.virtual_input.quick, 1, self.virtual_input.down] + [self.virtual_input.right] * 3 + \
+                [self.virtual_input.throw]
         self.execute_steps(*steps)
 
     def initial_setup(self):

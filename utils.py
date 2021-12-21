@@ -94,17 +94,17 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.4.4-beta'
+        self.APP_VERSION = '3.5.0-beta'
         self.APP_CHANGELOGS = {
             'English': [
                 f'Updated to {self.APP_VERSION} \\o/',
                 'If it\'s your first time using the bot or seeing this message, please click "Instructions" and read them carefully',
-                '- Added legacy menu detection option',
+                '- Changed the mode',
             ],
             'Русский': [
                 f'Обновился до {self.APP_VERSION} \\o/',
                 'Если вы используете бота или видите это сообщение впервые, пожалуйста, нажмите на "Инструкции" и тщательно их прочтите',
-                '- Добавил настройку "Старое определение меню"',
+                '- Сменил режим игры',
             ]
         }
 
