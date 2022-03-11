@@ -6,10 +6,14 @@ Gold/XP farming bot for Brawlhalla
 
 Heavily inspired by [BrawlhallaEZ](https://github.com/jamunano/BrawlhallaEZ)
 
+### -------------------------------------------------
 
-**WARNING:** Bot was initially made for personal use.
-It should not, but still can cause some unexpected consequences, including making purchases from mallhalla (with in-game currencies).
-Developer is not responsible for any harm the program may case. Use at your own risk
+### BOT IS NO LONGER MAINTAINED!
+
+### -------------------------------------------------
+
+**WARNING:** Bot was initially made for personal use. It should not, but still can cause some unexpected consequences, including making purchases from mallhalla (with in-game currencies). Developer is
+not responsible for any harm the program may case. Use at your own risk
 
 (it should work fine tho, I tested it for >600 hours at this point)
 
