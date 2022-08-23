@@ -3,6 +3,7 @@ from time import time
 
 from config import *
 from direct_input import *
+from menu import find_element, regenerate_layout
 from windows import *
 
 
@@ -47,10 +48,11 @@ class BrawlhallaBot:
         self.time_started = time()
         self._time_started = self.time_started
 
-        self.sample = [[] * 8]
         self.last_states = set()
 
         self.state_detection_pixels = get_menu_pixels()
+
+        self.current_menu_element = None
 
     def find_brawlhalla(self):
         brawlhalla = BrawlhallaProcess.find()
@@ -99,9 +101,9 @@ class BrawlhallaBot:
         self.duration = 15
 
         self.go_to_menu(True)
+        regenerate_layout()
+        self.current_menu_element = find_element('first_column').current_element
         sleep(2)
-        if not self.config.legacy_menu_detection:
-            self.get_menu_sample()
 
         if self.config.mute:
             self.mute()
@@ -160,20 +162,13 @@ class BrawlhallaBot:
 
     @property
     def state_conditions(self):
-        conn_x = 1673
+        conn_x = 1772 - ceil(98.5 * (self.config.bots // 2))
         low_conn_x = conn_x - 27
 
-        _legacy_menu = {
-            'pixels': ((40, 551), (34, 551)),
-            'colors': ((247, 248, 249), (246, 247, 249), (246, 247, 248), (248, 249, 249), (247, 247, 248)),
-        }
         _new_menu = {
             'pixels': ((1890, 70),),
             'colors': ((255, 255, 255),)
         }
-
-        legacy_menu = self.state_detection_pixels.get('legacy_menu') or _legacy_menu
-        new_menu = self.state_detection_pixels.get('menu') or _new_menu
 
         res = {
             'ingame': {
@@ -184,15 +179,7 @@ class BrawlhallaBot:
                 'pixels': ((low_conn_x, 64),),
                 'colors': ((255, 255, 51), (255, 153, 0), (255, 0, 0)),
             },
-            'legacy_cgr_selected': {
-                'pixels': ((40, 532),),
-                'colors': ((247, 248, 249), (246, 247, 249), (246, 247, 248), (248, 249, 249)),
-            },
-            'legacy_mtl_selected': {
-                'pixels': ((40, 792),),
-                'colors': ((247, 248, 249), (246, 247, 249), (246, 247, 248), (248, 249, 249)),
-            },
-            'menu': legacy_menu if self.config.legacy_menu_detection else new_menu,
+            'menu': self.state_detection_pixels.get('menu') or _new_menu,
             'loading': {
                 'pixels': ((899, 85),),
                 'colors': ((227, 248, 255),),
@@ -224,10 +211,6 @@ class BrawlhallaBot:
             'disconnected': {
                 'pixels': ((934, 623),),
                 'colors': ((247, 248, 249),),
-            },
-            'settings_selected': {
-                'pixels': ((1890, 71),),
-                'colors': ((166, 166, 183),),
             },
             'system_settings_selected': {
                 'pixels': ((1607, 195),),
@@ -263,8 +246,11 @@ class BrawlhallaBot:
 
     @property
     def duration_setting(self):
-        return [self.open_settings, 1] + [self.virtual_input.down] * 2 + (self.mode.next_duration - self.duration) * [self.virtual_input.right] + (
-                self.duration - self.mode.next_duration) * [self.virtual_input.left] + [self.virtual_input.quick]
+        return [self.open_settings, 1] + \
+               [self.virtual_input.down] * 3 + \
+               (self.mode.next_duration - self.duration) * [self.virtual_input.right] + \
+               (self.duration - self.mode.next_duration) * [self.virtual_input.left] + \
+               [self.virtual_input.quick]
 
     @property
     def danger_zone(self):
@@ -277,23 +263,6 @@ class BrawlhallaBot:
     @staticmethod
     def is_color(screenshot, pixels, colors):
         return any(screenshot.getpixel(pixel) in colors for pixel in pixels)
-
-    def get_menu_column(self):
-        return list(chunks(list(self.brawlhalla.make_screenshot().crop((65, 248, 66, 945)).getdata()), 8))
-
-    def get_menu_sample(self):
-        self.execute_steps(*[self.virtual_input.right] * 5)
-        sleep(1)
-        self.sample = self.get_menu_column()
-
-    def menu_element_selected(self):
-        current_column = self.get_menu_column()
-        selected = list(filter(lambda x: compare(self.sample[x], current_column[x]) > 5, range(8)))
-        if len(selected) > 1:
-            raise InvalidStateError
-        if not selected:
-            return 0
-        return selected[0] + 1
 
     def execute_steps(self, *steps, delay=.1):
         self.get_states()
@@ -328,9 +297,9 @@ class BrawlhallaBot:
                 self.execute_steps('ended_fighting', 5, self.after_fight)
 
         except NotRespondingError:
+            self.crashes += 1
             sleep(5)
             logger.info('reinitializing')
-            self.crashes += 1
         except QueuedRecalculation:
             sleep(5)
             logger.info('queued_recalc')
@@ -341,6 +310,7 @@ class BrawlhallaBot:
             logger.warning('danger_zone_warning')
             sleep(5)
         except InvalidStateError:
+            self.crashes += 1
             logger.warning('invalid_state_warning')
             sleep(5)
 
@@ -349,6 +319,10 @@ class BrawlhallaBot:
             try:
                 self.main_sequence()
             except KeyboardInterrupt:
+                self.on_exit()
+            except Exception as e:
+                logger.exception(e)
+                self.crashes += 1
                 self.on_exit()
 
     def get_states(self):
@@ -384,20 +358,13 @@ class BrawlhallaBot:
                 self.virtual_input.quick()
             if not initial and self.has_state('offline'):
                 logger.info('offline')
-                self.select_cgr()
-                self.go_to_lobby()
+                self.select_menu_item('custom_game_room')
+                self.go_to_lobby(100)
                 logger.info('reconnected')
                 self.go_to_menu()
             if iters > 100:
                 raise NotRespondingError
             self.get_states()
-
-    def select_menu_item(self, item, *steps):
-        while self.menu_element_selected() != item:
-            logger.debug('item_not_selected', item)
-            self.execute_steps(*steps, delay=.05)
-            if self.has_state('game_in_progress'):
-                self.virtual_input.dodge()
 
     def select_item(self, item, *steps):
         while not self.has_state(f'{item}_selected'):
@@ -406,40 +373,35 @@ class BrawlhallaBot:
             if self.has_state('game_in_progress'):
                 self.virtual_input.dodge()
 
-    def select_cgr(self):
-        if self.config.legacy_menu_detection:
-            return self.select_item('legacy_cgr', self.virtual_input.left, self.virtual_input.down)
-        self.select_menu_item(4, self.virtual_input.left, self.virtual_input.down)
-
-    def select_mtl(self):
-        if self.config.legacy_menu_detection:
-            return self.select_item('legacy_mtl', self.virtual_input.left, self.virtual_input.down)
-        self.select_menu_item(7, self.virtual_input.left, self.virtual_input.down)
-
-    def select_settings(self):
-        self.select_item('settings', self.virtual_input.up, self.virtual_input.right)
-
-    def select_system_settings(self):
-        self.select_item('system_settings', self.virtual_input.down)
+    def select_menu_item(self, name):
+        target = find_element(name)
+        keys = self.current_menu_element.move_to(target, self.virtual_input)
+        self.current_menu_element = target
+        self.execute_steps(*keys)
 
     def mute(self):
-        self.go_to_menu()
         logger.info('muting')
-        self.select_settings()
-        self.select_system_settings()
-        self.execute_steps(self.virtual_input.quick, *([self.virtual_input.left] * 10), self.virtual_input.down, *([self.virtual_input.left] * 10), self.virtual_input.dodge, self.virtual_input.dodge)
+        self.select_menu_item('system_settings')
+        self.get_states()
+        if not self.has_state('system_settings_selected'):
+            raise InvalidStateError
+        self.execute_steps(self.virtual_input.quick, *([self.virtual_input.left] * 10), self.virtual_input.down, *([self.virtual_input.left] * 10), self.virtual_input.dodge)
 
     def sort_by_date(self):
+        counter = 0
         while not self.has_state('sorted_by_date'):
             logger.debug('sorting_by_date')
             self.virtual_input.enter()
             sleep(.5)
             self.get_states()
+            if counter > 10:
+                raise InvalidStateError
 
     def get_characters(self):
         _characters = []
         rotation = get_rotation()
-        self.execute_steps(self.go_to_menu, self.select_mtl, self.virtual_input.quick, .5, self.sort_by_date)
+        self.select_menu_item('meet_the_legends')
+        self.execute_steps(self.virtual_input.quick, .5, self.sort_by_date)
         logger.info('collecting_character_data')
         for line in level_character_matrix:
             for character in line:
@@ -457,16 +419,17 @@ class BrawlhallaBot:
         locked_characters = [character.name for character in _characters if not character.unlocked]
         fixed_characters = unlocked_characters + ['random'] + locked_characters
         build_character_matrix(fixed_characters)
+        self.go_to_menu()
         return _characters
 
-    def go_to_lobby(self):
+    def go_to_lobby(self, max_iters=10):
         iters = 0
         while not self.has_state('lobby'):
             iters += 1
             self.virtual_input.quick()
             sleep(2)
-            if iters > 100:
-                raise NotRespondingError
+            if iters > max_iters:
+                raise InvalidStateError
             self.get_states()
 
     def validate_level(self):
@@ -513,7 +476,7 @@ class BrawlhallaBot:
             iters += 1
             sleep(1)
             if iters > 100:
-                raise NotRespondingError
+                raise InvalidStateError
             self.get_states()
 
     def pick_character(self):
@@ -529,7 +492,7 @@ class BrawlhallaBot:
             self.duration = self.mode.next_duration
 
     def reset_xp(self):
-        self.go_to_menu()
+        self.execute_steps(self.virtual_input.dodge, self.virtual_input.dodge, self.go_to_menu)
         waiting_start = time()
         logger.info('wait_for_xp_reset', self.config.auto_stop_duration)
         while time() - waiting_start < self.config.auto_stop_duration * 60:
@@ -543,20 +506,33 @@ class BrawlhallaBot:
 
     def setup_lobby(self):
         # noinspection PyTypeChecker
-        steps = [self.open_settings] + [self.virtual_input.right] * 6 + [self.virtual_input.down] + [self.virtual_input.left] * 3 + \
-                [self.virtual_input.down] + [self.virtual_input.left] * (15 - self.duration) + \
-                [self.virtual_input.down] * 1 + [self.virtual_input.left] * 6 + [self.virtual_input.rbr] + [self.virtual_input.down] * 3 + \
-                [self.virtual_input.left, self.virtual_input.down] * 3 + [self.virtual_input.left, self.virtual_input.quick]
+        steps = [self.open_settings] + \
+                [self.virtual_input.left] * 8 + \
+                [self.virtual_input.down] * 3 + \
+                [self.virtual_input.left] * (8 - self.duration) + [self.virtual_input.right] * (self.duration - 8) + \
+                [self.virtual_input.down] + \
+                [self.virtual_input.left] * 3 + \
+                [self.virtual_input.down] + \
+                [self.virtual_input.left] * 6 + \
+                [self.virtual_input.down] * 3 + \
+                [self.virtual_input.left] * (3 - self.config.bots) + [self.virtual_input.right] * (self.config.bots - 3) + \
+                [self.virtual_input.rbr] + \
+                [self.virtual_input.down] * 3 + \
+                [self.virtual_input.left, self.virtual_input.down] * 3 + \
+                [self.virtual_input.left, self.virtual_input.quick]
         self.execute_steps(*steps)
 
     def add_bots(self):
         steps = [self.virtual_input.throw, 1] + \
-                [self.virtual_input.quick, 1, self.virtual_input.quick, 1, self.virtual_input.down, self.virtual_input.left] + \
+                [self.virtual_input.down] * (self.config.bots - 1) + \
+                [self.virtual_input.quick] * self.config.bots + \
                 [self.virtual_input.throw]
         self.execute_steps(*steps)
 
     def initial_setup(self):
-        self.execute_steps('creating_lobby', self.go_to_menu, 1, 1, self.select_cgr, self.go_to_lobby, 'setting_lobby', self.setup_lobby, 4, self.add_bots)
+        self.execute_steps('creating_lobby', 1, 1)
+        self.select_menu_item('custom_game_room')
+        self.execute_steps(self.go_to_lobby, 'setting_lobby', self.setup_lobby, 4, self.add_bots)
 
     def before_fight(self):
         self.execute_steps(2, self.pick_character, 1, self.set_duration, 1)

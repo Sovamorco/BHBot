@@ -94,17 +94,17 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.5.1'
+        self.APP_VERSION = '3.5.6'
         self.APP_CHANGELOGS = {
             'English': [
                 f'Updated to {self.APP_VERSION} \\o/',
                 'If it\'s your first time using the bot or seeing this message, please click "Instructions" and read them carefully',
-                '- Bot is no longer maintained',
+                '- Changed the menu detection',
             ],
             'Русский': [
                 f'Обновился до {self.APP_VERSION} \\o/',
                 'Если вы используете бота или видите это сообщение впервые, пожалуйста, нажмите на "Инструкции" и тщательно их прочтите',
-                '- Бот больше не поддерживается',
+                '- Поменял обнаружение меню',
             ]
         }
 
@@ -253,11 +253,11 @@ class Settings:
         json.dump(obj, self.installation_info_location.open('w+'))
 
     def clear_old_logs(self):
-        for _log in self.logs_folder.glob('????????-??????.log'):
-            dt = _log.name[:-4]
+        for log_file in self.logs_folder.glob('????????-??????.log'):
+            dt = log_file.name[:-4]
             dt = datetime.strptime(dt, '%Y%m%d-%H%M%S')
             if datetime.now() - dt > timedelta(days=3):
-                _log.unlink()
+                log_file.unlink()
 
     def add_file_handlers(self):
         self.logs_folder.mkdir(parents=True, exist_ok=True)

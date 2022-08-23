@@ -22,9 +22,9 @@ class Config:
         self.auto_detect_auto_stop = config.get('auto_detect_auto_stop', False)
         self.auto_stop_frequency = config.get('auto_stop_frequency', 5)
         self.auto_stop_duration = config.get('auto_stop_duration', 30)
+        self.bots = config.get('bots', 2)
         self.mute = config.get('mute', False)
         self.stealth = config.get('stealth', False)
-        self.legacy_menu_detection = config.get('legacy_menu_detection', False)
         self.modes = self.get_modes()
         if not self.modes:
             logger.error('no_modes')
@@ -180,10 +180,10 @@ class GUIConfig:
             [self.row('auto_stop_frequency',
                       Sg.Slider(range=(1, 20), resolution=.5, orientation='horizontal', default_value=self.config.auto_stop_frequency, font=(global_settings.font, 12)))],
             [self.row('auto_stop_duration',
-                      Sg.Slider(range=(1, 240), resolution=5, orientation='horizontal', default_value=self.config.auto_stop_duration, font=(global_settings.font, 12)))],
+                      Sg.Slider(range=(5, 240), resolution=5, orientation='horizontal', default_value=self.config.auto_stop_duration, font=(global_settings.font, 12)))],
+            [self.row('bots', Sg.Combo(list(range(1, 8)), readonly=True, default_value=self.config.bots, font=(global_settings.font, 12)))],
             [self.row('stealth', Sg.Checkbox('', default=self.config.stealth))],
             [self.row('mute', Sg.Checkbox('', default=self.config.mute))],
-            [self.row('legacy_menu_detection', Sg.Checkbox('', default=self.config.legacy_menu_detection))],
             [Sg.Button('', font=(global_settings.font, 12), key='hotkey_settings')],
             [Sg.Button('', font=(global_settings.font, 12), key='save'), Sg.Button('', font=(global_settings.font, 12), key='back')]
         ]
