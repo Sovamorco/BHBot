@@ -31,7 +31,7 @@ second_digit_dict = dict(((key, tuple(((x + second_digit_diff, y) for x, y in va
 
 single_digit_dict = dict(((key, tuple(((x + single_digit_diff, y) for x, y in value))) for key, value in first_digit_dict.items()))
 
-level_hundred_conditions = ((2, 8), (19, 45), (39, 12), (68, 39), (82, 12), (84, 42))
+level_hundred_conditions = ((0, 9), (0, 15), (10, 42), (11, 8), (27, 14), (49, 39), (62, 37), (84, 9), (84, 40))
 
 levels_xp = [
     0,  # infinite xp if lvl 0 (undefined)

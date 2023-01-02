@@ -2,16 +2,18 @@ from levels import *
 
 characters = ['bödvar', 'cassidy', 'orion', 'lord vraxx', 'gnash', 'queen nai', 'hattori', 'sir roland', 'scarlet', 'thatch', 'ada', 'sentinel', 'lucien', 'teros', 'brynn', 'asuri', 'barraza',
               'ember', 'azoth', 'koji', 'ulgrim', 'diana', 'jhala', 'kor', 'wu shang', 'val', 'ragnir', 'cross', 'mirage', 'nix', 'mordex', 'yumiko', 'artemis', 'caspian', 'sidra', 'xull', 'kaya',
-              'isaiah', 'jiro', 'lin fei', 'zariel', 'rayman', 'dusk', 'fait', 'thor', 'petra', 'vector', 'volkov', 'onyx', 'jaeyun', 'mako', 'magyar', 'reno', 'munin', 'arcadia', 'ezio']
+              'isaiah', 'jiro', 'lin fei', 'zariel', 'rayman', 'dusk', 'fait', 'thor', 'petra', 'vector', 'volkov', 'onyx', 'jaeyun', 'mako', 'magyar', 'reno', 'munin', 'arcadia', 'ezio', 'tezca']
 
-level_character_matrix = list([characters[i:i + 14] for i in range(0, len(characters), 14)])
+level_character_matrix_width = 15
+level_character_matrix = list([characters[i:i + level_character_matrix_width] for i in range(0, len(characters), level_character_matrix_width)])
 
+character_matrix_width = 15
 character_matrix = []
 
 
 def build_character_matrix(_characters):
     global character_matrix
-    character_matrix = list([_characters[i:i + 15] for i in range(0, len(_characters), 15)])
+    character_matrix = list([_characters[i:i + character_matrix_width] for i in range(0, len(_characters), character_matrix_width)])
 
 
 build_character_matrix(characters + ['random'])

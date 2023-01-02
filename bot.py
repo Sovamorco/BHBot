@@ -396,6 +396,7 @@ class BrawlhallaBot:
             self.get_states()
             if counter > 10:
                 raise InvalidStateError
+            counter += 1
 
     def get_characters(self):
         _characters = []
@@ -425,12 +426,12 @@ class BrawlhallaBot:
     def go_to_lobby(self, max_iters=10):
         iters = 0
         while not self.has_state('lobby'):
-            iters += 1
             self.virtual_input.quick()
             sleep(2)
             if iters > max_iters:
                 raise InvalidStateError
             self.get_states()
+            iters += 1
 
     def validate_level(self):
         self.go_to_rewards_screen()

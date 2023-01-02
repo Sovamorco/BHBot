@@ -94,17 +94,19 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.5.6'
+        self.APP_VERSION = '3.5.8'
         self.APP_CHANGELOGS = {
             'English': [
                 f'Updated to {self.APP_VERSION} \\o/',
                 'If it\'s your first time using the bot or seeing this message, please click "Instructions" and read them carefully',
-                '- Changed the menu detection',
+                '- Added Tezca',
+                '- Fixed level 100 detection',
             ],
             'Русский': [
                 f'Обновился до {self.APP_VERSION} \\o/',
                 'Если вы используете бота или видите это сообщение впервые, пожалуйста, нажмите на "Инструкции" и тщательно их прочтите',
-                '- Поменял обнаружение меню',
+                '- Добавил Tezca',
+                '- Починил обнаружение уровня 100',
             ]
         }
 
