@@ -247,8 +247,8 @@ class BrawlhallaBot:
     @property
     def duration_setting(self):
         return [self.open_settings, 1] + \
-               [self.virtual_input.down] * 3 + \
-               (self.mode.next_duration - self.duration) * [self.virtual_input.right] + \
+            [self.virtual_input.down] * 2 + \
+            (self.mode.next_duration - self.duration) * [self.virtual_input.right] + \
                (self.duration - self.mode.next_duration) * [self.virtual_input.left] + \
                [self.virtual_input.quick]
 
@@ -508,15 +508,13 @@ class BrawlhallaBot:
     def setup_lobby(self):
         # noinspection PyTypeChecker
         steps = [self.open_settings] + \
-                [self.virtual_input.left] * 8 + \
-                [self.virtual_input.down] * 3 + \
-                [self.virtual_input.left] * (8 - self.duration) + [self.virtual_input.right] * (self.duration - 8) + \
+                [self.virtual_input.right] * 6 + \
                 [self.virtual_input.down] + \
                 [self.virtual_input.left] * 3 + \
                 [self.virtual_input.down] + \
+                [self.virtual_input.left] * (15 - self.duration) + \
+                [self.virtual_input.down] + \
                 [self.virtual_input.left] * 6 + \
-                [self.virtual_input.down] * 3 + \
-                [self.virtual_input.left] * (3 - self.config.bots) + [self.virtual_input.right] * (self.config.bots - 3) + \
                 [self.virtual_input.rbr] + \
                 [self.virtual_input.down] * 3 + \
                 [self.virtual_input.left, self.virtual_input.down] * 3 + \
@@ -524,10 +522,7 @@ class BrawlhallaBot:
         self.execute_steps(*steps)
 
     def add_bots(self):
-        steps = [self.virtual_input.throw, 1] + \
-                [self.virtual_input.down] * (self.config.bots - 1) + \
-                [self.virtual_input.quick] * self.config.bots + \
-                [self.virtual_input.throw]
+        steps = [self.virtual_input.throw, 1, self.virtual_input.quick, self.virtual_input.throw]
         self.execute_steps(*steps)
 
     def initial_setup(self):
