@@ -1,6 +1,6 @@
 from utils import *
 
-level_bbox = 975, 155, 1060, 210
+level_bbox = 975, 143, 1060, 198
 font_color = (254, 254, 254)
 single_digit_diff = 21
 second_digit_diff = 43
