@@ -182,12 +182,12 @@ class GUI:
             elif event == 'take_screenshot':
                 bh = BrawlhallaProcess.find()
                 if bh is None:
-                    logger.error('Brawlhalla is not running')
+                    logger.error('bh_not_running')
                 else:
                     screenshot_name = f'screenshot-{uuid.uuid4()}.png'
                     screenshot_path = Path(os.getenv('LOCALAPPDATA')) / 'BHBot' / screenshot_name
-                    logger.info(f'Taking a screenshot into {screenshot_path}')
                     bh.make_screenshot().save(screenshot_path)
+                    logger.info('took_screenshot', str(screenshot_path))
 
             elif event == 'update_available_button':
                 global_settings.new_version.download(background=True)

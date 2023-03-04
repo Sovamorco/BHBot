@@ -189,4 +189,6 @@ MESSAGES = {
     'delayed_stop': 'Bot will stop after finishing current game or before beginning a new one',
     'cancel_stop': 'All queued stops were cancelled',
     'menu_pixels_error': 'Error getting pixels for state detection. Don\'t worry, this just means that the default ones will be used:\n%s',
+    'took_screenshot': 'Screenshot saved to %s',
+    'bh_not_running': 'Brawlhalla is not running',
 }

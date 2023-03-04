@@ -99,11 +99,13 @@ class Settings:
             'English': [
                 f'Updated to {self.APP_VERSION} \\o/',
                 'If it\'s your first time using the bot or seeing this message, please click "Instructions" and read them carefully',
+                '- Add "Take screenshot" button for debugging',
                 '- Fix pixel detection at first frame',
             ],
             'Русский': [
                 f'Обновился до {self.APP_VERSION} \\o/',
                 'Если вы используете бота или видите это сообщение впервые, пожалуйста, нажмите на "Инструкции" и тщательно их прочтите',
+                '- Добавил кнопку "Сделать снимок экрана" для дебага',
                 '- Починил определение пикселей на первом кадре игры',
             ]
         }
