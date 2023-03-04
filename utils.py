@@ -94,19 +94,23 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.5.15'
+        self.APP_VERSION = '3.5.16'
         self.APP_CHANGELOGS = {
             'English': [
                 f'Updated to {self.APP_VERSION} \\o/',
                 'If it\'s your first time using the bot or seeing this message, please click "Instructions" and read them carefully',
                 '- Add "Take screenshot" button for debugging',
                 '- Fix pixel detection at first frame',
+                '- Fix xp detection',
+                '- Fix bot wrongly detecting window as resized',
             ],
             'Русский': [
                 f'Обновился до {self.APP_VERSION} \\o/',
                 'Если вы используете бота или видите это сообщение впервые, пожалуйста, нажмите на "Инструкции" и тщательно их прочтите',
                 '- Добавил кнопку "Сделать снимок экрана" для дебага',
                 '- Починил определение пикселей на первом кадре игры',
+                '- Починил определение опыта',
+                '- Починил определение измененного размера окна',
             ]
         }
 

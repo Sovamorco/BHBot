@@ -5,8 +5,8 @@ font_color = (254, 254, 254)
 single_digit_diff = 21
 second_digit_diff = 43
 
-bar_bbox = 1082, 159, 1656, 160
-bar_colors = ((162, 162, 180), (130, 139, 160), (62, 90, 118))
+bar_bbox = 1082, 148, 1656, 149
+bar_colors = ((158, 158, 177), (128, 128, 153), (30, 60, 126))
 
 rewards_bar_bbox = 786, 331, 1365, 332
 rewards_bar_colors = ((35, 120), (190, 255), (40, 165))

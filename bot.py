@@ -86,11 +86,11 @@ class BrawlhallaBot:
         logger.info('found_bh')
         self.virtual_input.esc()  # idk why but it puts bh into windowed
         sleep(1)
-        self.get_states()
         if self.brawlhalla.fullscreen:
             logger.info('not_windowed_mode')
             raise NotRespondingError
         self.brawlhalla.resize()
+        self.get_states()
         if self.config.stealth:
             logger.info('stealth_mode')
             self.brawlhalla.hide()
