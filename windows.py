@@ -1,4 +1,3 @@
-import ctypes
 import subprocess
 import winreg
 from time import sleep
@@ -155,7 +154,7 @@ class BrawlhallaProcess:
         import win32ui
         w, h = self.get_client_size()
 
-        window_dc = win32gui.GetWindowDC(self.window)
+        window_dc = win32gui.GetDC(self.window)
         mfc_dc = win32ui.CreateDCFromHandle(window_dc)
         save_dc = mfc_dc.CreateCompatibleDC()
 
@@ -163,8 +162,7 @@ class BrawlhallaProcess:
         save_bit_map.CreateCompatibleBitmap(mfc_dc, w, h)
 
         save_dc.SelectObject(save_bit_map)
-
-        ctypes.windll.user32.PrintWindow(self.window, save_dc.GetSafeHdc(), 1)
+        win32gui.BitBlt(save_dc.GetSafeHdc(), 0, 0, w, h, window_dc, 0, 0, win32con.SRCCOPY)
 
         bmpinfo = save_bit_map.GetInfo()
         bmpstr = save_bit_map.GetBitmapBits(True)
