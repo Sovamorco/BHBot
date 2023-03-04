@@ -84,9 +84,9 @@ class BrawlhallaBot:
         self.level_definer = LevelDefiner(self.brawlhalla)
 
         logger.info('found_bh')
-        self.get_states()
         self.virtual_input.esc()  # idk why but it puts bh into windowed
         sleep(1)
+        self.get_states()
         if self.brawlhalla.fullscreen:
             logger.info('not_windowed_mode')
             raise NotRespondingError
