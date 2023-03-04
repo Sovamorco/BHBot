@@ -12,6 +12,7 @@ LAYOUT_MAPPING = {
     'instructions': 'Instructions',
     'exit': 'Exit',
     'test': 'Test',
+    'take_screenshot': 'Take screenshot',
     'update_available_title': 'Update available!',
     'update_available_version': 'New version: {0.new_version.version}',
     'update_available_button': 'Update',

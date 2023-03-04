@@ -94,17 +94,17 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.5.12'
+        self.APP_VERSION = '3.5.13-beta'
         self.APP_CHANGELOGS = {
             'English': [
                 f'Updated to {self.APP_VERSION} \\o/',
                 'If it\'s your first time using the bot or seeing this message, please click "Instructions" and read them carefully',
-                '- Fixed level detection',
+                '- Added debug "Take screenshot" button',
             ],
             'Русский': [
                 f'Обновился до {self.APP_VERSION} \\o/',
                 'Если вы используете бота или видите это сообщение впервые, пожалуйста, нажмите на "Инструкции" и тщательно их прочтите',
-                '- Починил определение уровня',
+                '- Добавил кнопку "Сделать скриншот" для дебага',
             ]
         }
 
