@@ -192,7 +192,7 @@ class GUI:
             elif event == 'update_available_button':
                 global_settings.new_version.download(background=True)
                 self.downloading_new_version = True
-            else:
+            elif not self.downloading_new_version:
                 self.autostart()
             if global_settings.compiled and global_settings.new_version and self.downloading_new_version and global_settings.new_version.is_downloaded():
                 global_settings.new_version.extract_restart()
