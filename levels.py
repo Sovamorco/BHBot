@@ -11,7 +11,7 @@ bar_colors = ((158, 158, 177), (128, 128, 153), (30, 60, 126))
 rewards_bar_bbox = 786, 331, 1365, 332
 rewards_bar_colors = ((35, 120), (190, 255), (40, 165))
 
-locked_pixel = 1162, 735
+locked_pixel = 1163, 875
 locked_color = (110, 200, 211)
 
 first_digit_dict = {
