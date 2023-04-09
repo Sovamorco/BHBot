@@ -6,6 +6,8 @@ Gold/XP farming bot for Brawlhalla
 
 Heavily inspired by [BrawlhallaEZ](https://github.com/jamunano/BrawlhallaEZ)
 
+# BOT IS POSSIBLY BANNABLE ACCORDING TO RECENT REPORTS
+
 ### -------------------------------------------------------------------
 
 ### BOT IS NO LONGER ACTIVELY MAINTAINED!

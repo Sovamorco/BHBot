@@ -43,6 +43,9 @@ class GUI:
     def create_window():
         Sg.theme('DarkGrey10')
         layout = [
+            [Sg.Text(' ', size=(1, 1), key='bannability_warning1', font=(global_settings.font, 30), text_color='red')],
+            [Sg.Text(' ', size=(1, 1), key='bannability_warning2', font=(global_settings.font, 30), text_color='red')],
+            [Sg.Text(' ', size=(1, 1), key='bannability_warning3', font=(global_settings.font, 30), text_color='red')],
             [Sg.Text(' ', size=(1, 1), key='title', font=(global_settings.font, 20))],
             [Sg.Text(' ', size=(1, 1), key='version', font=(global_settings.font, 13))],
             [Sg.Text(' ', size=(1, 1), key='press_start', font=(global_settings.font, 14), metadata=0)],

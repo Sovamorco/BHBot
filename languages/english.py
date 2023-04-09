@@ -4,6 +4,9 @@ LAYOUT_MAPPING = {
     # Main window
     'main_window_title': 'BHBot',
     'title': 'BHBot by Sovamorco',
+    'bannability_warning1': '!!!WARNING: According to recent reports',
+    'bannability_warning2': 'bot might be bannable so you should',
+    'bannability_warning3': 'probably refrain from using it for now',
     'version': 'Version: {0.APP_VERSION}',
     'press_start': ['Press "Start" to start the bot', 'Press "Stop" to stop the bot'],
     'toggle': ['Start', 'Stop'],

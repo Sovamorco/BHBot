@@ -4,6 +4,9 @@ LAYOUT_MAPPING = {
     # Основное окно
     'main_window_title': 'BHBot',
     'title': 'BHBot от Sovamorco',
+    'bannability_warning1': '!!!ОСТОРОЖНО: Согласно недавним жалобам',
+    'bannability_warning2': 'бот может вызвать блокировку аккаунта',
+    'bannability_warning3': 'так что лучше пока его не использовать',
     'version': 'Версия: {0.APP_VERSION}',
     'press_start': ['Нажми "Старт" чтобы начать работу бота', 'Нажми "Стоп" чтобы завершить работу бота'],
     'toggle': ['Старт', 'Стоп'],
