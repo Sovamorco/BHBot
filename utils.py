@@ -94,17 +94,21 @@ class Settings:
 
     def __init__(self, settings):
         self.APP_NAME = 'BHBot'
-        self.APP_VERSION = '3.5.20'
+        self.APP_VERSION = '3.5.21'
         self.APP_CHANGELOGS = {
             'English': [
                 f'Updated to {self.APP_VERSION} \\o/',
                 'If it\'s your first time using the bot or seeing this message, please click "Instructions" and read them carefully',
-                '- Added a possible ban warning',
+                '- Fixed danger zone',
+                '- Removed bots selector (internally was always set to 2 but caused issues)',
+                '- Updated instructions',
             ],
             'Русский': [
                 f'Обновился до {self.APP_VERSION} \\o/',
                 'Если вы используете бота или видите это сообщение впервые, пожалуйста, нажмите на "Инструкции" и тщательно их прочтите',
-                '- Добавил предупреждение о возможности бана',
+                '- Починил danger zone',
+                '- Удалил настройку количества ботов',
+                '- Обновил инструкции',
             ]
         }
 

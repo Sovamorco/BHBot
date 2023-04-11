@@ -229,12 +229,12 @@ class BrawlhallaBot:
                 'colors': ((247, 248, 249),),
             },
             'in_mallhalla': {
-                'pixels': ((578, 135),),
-                'colors': ((255, 255, 255),),
+                'pixels': ((338, 972),),
+                'colors': ((100, 77, 255),),
             },
             'in_battle_pass': {
-                'pixels': ((160, 40),),
-                'colors': ((255, 255, 255),),
+                'pixels': ((171, 660),),
+                'colors': ((181, 201, 225),),
             },
         }
 
