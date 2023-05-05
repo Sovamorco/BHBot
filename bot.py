@@ -162,8 +162,8 @@ class BrawlhallaBot:
 
     @property
     def state_conditions(self):
-        conn_x = 1772 - ceil(98.5 * (self.config.bots // 2))
-        low_conn_x = conn_x - 27
+        conn_x = 1806 - ceil(98.5 * 2)  # 1609
+        low_conn_x = conn_x - 27  # 1582
 
         _new_menu = {
             'pixels': ((1890, 70),),
@@ -172,11 +172,11 @@ class BrawlhallaBot:
 
         res = {
             'ingame': {
-                'pixels': ((conn_x, 46),),
+                'pixels': ((conn_x, 56),),
                 'colors': ((0, 204, 51),),
             },
             'low_connection': {
-                'pixels': ((low_conn_x, 64),),
+                'pixels': ((low_conn_x, 72),),
                 'colors': ((255, 255, 51), (255, 153, 0), (255, 0, 0)),
             },
             'menu': self.state_detection_pixels.get('menu') or _new_menu,
@@ -247,10 +247,10 @@ class BrawlhallaBot:
     @property
     def duration_setting(self):
         return [self.open_settings, 1] + \
-            [self.virtual_input.down] * 2 + \
+            [self.virtual_input.down] * 3 + \
             (self.mode.next_duration - self.duration) * [self.virtual_input.right] + \
-               (self.duration - self.mode.next_duration) * [self.virtual_input.left] + \
-               [self.virtual_input.quick]
+            (self.duration - self.mode.next_duration) * [self.virtual_input.left] + \
+            [self.virtual_input.quick]
 
     @property
     def danger_zone(self):
@@ -508,13 +508,14 @@ class BrawlhallaBot:
     def setup_lobby(self):
         # noinspection PyTypeChecker
         steps = [self.open_settings] + \
-                [self.virtual_input.right] * 6 + \
-                [self.virtual_input.down] + \
-                [self.virtual_input.left] * 3 + \
-                [self.virtual_input.down] + \
-                [self.virtual_input.left] * (15 - self.duration) + \
-                [self.virtual_input.down] + \
+                [self.virtual_input.right] * 10 + \
+                [self.virtual_input.down] * 3 + \
+                [self.virtual_input.left] * (2 - self.duration) + \
+                [self.virtual_input.right] * (self.duration - 2) + \
+                [self.virtual_input.down] * 2 + \
                 [self.virtual_input.left] * 6 + \
+                [self.virtual_input.down] * 2 + \
+                [self.virtual_input.right] + \
                 [self.virtual_input.rbr] + \
                 [self.virtual_input.down] * 3 + \
                 [self.virtual_input.left, self.virtual_input.down] * 3 + \
@@ -522,7 +523,10 @@ class BrawlhallaBot:
         self.execute_steps(*steps)
 
     def add_bots(self):
-        steps = [self.virtual_input.throw, 1, self.virtual_input.quick, self.virtual_input.throw]
+        steps = [self.virtual_input.throw, 1] + \
+                [self.virtual_input.down] * 3 + \
+                [self.virtual_input.quick] * 4 + \
+                [self.virtual_input.throw]
         self.execute_steps(*steps)
 
     def initial_setup(self):
