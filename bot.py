@@ -6,6 +6,13 @@ from direct_input import *
 from menu import find_element, regenerate_layout
 from windows import *
 
+CONNECTION_LEVELS = (
+    (0, 204, 51),  # green
+    (255, 255, 51),  # yellow
+    (255, 153, 0),  # orange
+    (255, 0, 0),  # red
+)
+
 
 class QueuedRecalculation(Exception):
     pass
@@ -163,7 +170,7 @@ class BrawlhallaBot:
     @property
     def state_conditions(self):
         conn_x = 1806 - ceil(98.5 * 2)  # 1609
-        low_conn_x = conn_x - 27  # 1582
+        low_conn_x = conn_x - 26  # 1583
 
         _new_menu = {
             'pixels': ((1890, 70),),
@@ -172,12 +179,12 @@ class BrawlhallaBot:
 
         res = {
             'ingame': {
-                'pixels': ((conn_x, 56),),
-                'colors': ((0, 204, 51),),
+                'pixels': ((conn_x, 58),),
+                'colors': (CONNECTION_LEVELS[0],),
             },
             'low_connection': {
-                'pixels': ((low_conn_x, 72),),
-                'colors': ((255, 255, 51), (255, 153, 0), (255, 0, 0)),
+                'pixels': ((low_conn_x, 74),),
+                'colors': CONNECTION_LEVELS,
             },
             'menu': self.state_detection_pixels.get('menu') or _new_menu,
             'loading': {
